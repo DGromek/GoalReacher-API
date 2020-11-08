@@ -2,11 +2,10 @@ package pl.politechnika.goalreacher.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.politechnika.goalreacher.entity.Group;
+import pl.politechnika.goalreacher.entity.Group_;
 import pl.politechnika.goalreacher.repository.GroupRepository;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 @Service
 public class GroupService
@@ -31,21 +30,21 @@ public class GroupService
         {
             for(int i = 0; i < length; i++)
                 ret.append(alphanumeric.charAt(random.nextInt(alphanumeric.length())));
-        }while(groupRepository.findByGuid(ret.toString()) == null);
+        }while(groupRepository.findByGuid(ret.toString()) != null);
         return ret.toString();
     }
 
-    public Group findByGuid(String guid)
+    public Group_ findByGuid(String guid)
     {
         return groupRepository.findByGuid(guid);
     }
 
-    public Iterable<Group> findAllGroups()
+    public Iterable<Group_> findAllGroups()
     {
         return groupRepository.findAll();
     }
 
-    public Group saveGroup(Group newGroup)
+    public Group_ saveGroup(Group_ newGroup)
     {
         newGroup.setGuid(generateGuid(guidLength));
         return groupRepository.save(newGroup);

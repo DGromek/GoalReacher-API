@@ -18,7 +18,8 @@ public class Event
     private long id;
 
     @ManyToOne
-    private Group group;
+    @JoinColumn(name = "group_id")
+    private Group_ group;
 
     @NotEmpty
     private String name;

@@ -26,7 +26,7 @@ public class UserGroup
     @ManyToOne
     @MapsId("groupId")
     @JoinColumn(name = "group_id")
-    Group group;
+    Group_ group;
 
     Status status;
 

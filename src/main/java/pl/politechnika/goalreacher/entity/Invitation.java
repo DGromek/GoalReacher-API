@@ -17,11 +17,14 @@ public class Invitation
     private Long id;
 
     @ManyToOne
-    private Group group;
+    @JoinColumn(name = "group_id")
+    private Group_ group;
 
     @ManyToOne
+    @JoinColumn(name = "invited_id")
     private User invited;
 
     @ManyToOne
+    @JoinColumn(name = "inviting_id")
     private User inviting;
 }
