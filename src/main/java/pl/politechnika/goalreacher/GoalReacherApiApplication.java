@@ -7,7 +7,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GoalReacherApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(GoalReacherApiApplication.class, args);
+        SpringApplication app = new SpringApplication(GoalReacherApiApplication.class);
+
+        String profile = System.getenv("PROFILE");
+        if (profile == null) {
+            app.setAdditionalProfiles("dev");
+        } else {
+            app.setAdditionalProfiles(profile);
+        }
+        app.run(args);
     }
 
 }
