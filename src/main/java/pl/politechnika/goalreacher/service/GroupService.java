@@ -24,9 +24,10 @@ public class GroupService
 
     private String generateGuid(int length)
     {
-        StringBuilder ret = new StringBuilder(length);
+        StringBuilder ret;
         do
         {
+            ret = new StringBuilder();
             for (int i = 0; i < length; i++)
                 ret.append(alphanumeric.charAt(random.nextInt(alphanumeric.length())));
         } while (groupRepository.findByGuid(ret.toString()) != null);
