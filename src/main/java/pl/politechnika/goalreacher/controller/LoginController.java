@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import pl.politechnika.goalreacher.entity.User;
+import pl.politechnika.goalreacher.model.Credentials;
 import pl.politechnika.goalreacher.service.UserService;
 import pl.politechnika.goalreacher.utils.JWTUtils;
 
@@ -27,7 +28,6 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Credentials credentials) {
-
         User user = userService.findByEmail(credentials.getEmail());
 
         if (user == null || !bCryptPasswordEncoder.matches(credentials.getPassword(), user.getPassword())) {

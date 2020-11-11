@@ -1,4 +1,4 @@
-package pl.politechnika.goalreacher.controller;
+package pl.politechnika.goalreacher.model;
 
 import lombok.Getter;
 
