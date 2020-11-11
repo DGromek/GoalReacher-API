@@ -1,19 +1,13 @@
 package pl.politechnika.goalreacher.entity;
 
 import pl.politechnika.goalreacher.embeddable.UserGroupKey;
+import pl.politechnika.goalreacher.model.Status;
 
 import javax.persistence.*;
 
 @Entity
 public class UserGroup
 {
-    private enum Status
-    {
-        CREATOR,
-        ADMIN,
-        USER,
-        PENDING
-    }
 
     @EmbeddedId
     UserGroupKey id;

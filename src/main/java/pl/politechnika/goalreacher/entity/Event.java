@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,5 +27,5 @@ public class Event
 
     private String description;
 
-    private String datetime;
+    private LocalDateTime datetime;
 }

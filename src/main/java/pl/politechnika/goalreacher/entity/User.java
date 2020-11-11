@@ -4,9 +4,11 @@ package pl.politechnika.goalreacher.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +29,12 @@ public class User
     @NotBlank
     private String lastName;
 
-//    @NotBlank
-//    private String password;
+    @NotBlank
+    @Min(6)
+    private String password;
 
     @Email
+    @UniqueElements
     private String email;
 
     @OneToMany(mappedBy = "user")

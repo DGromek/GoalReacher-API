@@ -20,7 +20,6 @@ public class GroupService
     public GroupService(GroupRepository groupRepository)
     {
         this.groupRepository = groupRepository;
-
     }
 
     private String generateGuid(int length)
@@ -28,9 +27,9 @@ public class GroupService
         StringBuilder ret = new StringBuilder(length);
         do
         {
-            for(int i = 0; i < length; i++)
+            for (int i = 0; i < length; i++)
                 ret.append(alphanumeric.charAt(random.nextInt(alphanumeric.length())));
-        }while(groupRepository.findByGuid(ret.toString()) != null);
+        } while (groupRepository.findByGuid(ret.toString()) != null);
         return ret.toString();
     }
 
