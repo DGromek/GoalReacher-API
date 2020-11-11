@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,12 +19,13 @@ public class Event
     private long id;
 
     @ManyToOne
-    private Group group;
+    @JoinColumn(name = "group_id")
+    private Group_ group;
 
     @NotEmpty
     private String name;
 
     private String description;
 
-    private String datetime;
+    private LocalDateTime datetime;
 }

@@ -6,27 +6,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Group
+public class Group_
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank
     private String guid;
 
-    @NotBlank
+    @NotEmpty
     private String name;
 
+    @NotEmpty
     private String description;
 
     @OneToMany(mappedBy = "group")
@@ -34,14 +33,14 @@ public class Group
     private List<UserGroup> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "group")
-    @JsonBackReference
+    @JsonBackReference(value = "events")
     private List<Event> events = new ArrayList<>();
 
     @OneToMany(mappedBy = "group")
-    @JsonBackReference
+    @JsonBackReference(value = "notes")
     private List<Note> notes = new ArrayList<>();
 
     @OneToMany(mappedBy = "group")
-    @JsonBackReference
+    @JsonBackReference(value = "invitations")
     private List<Note> invitations = new ArrayList<>();
 }
