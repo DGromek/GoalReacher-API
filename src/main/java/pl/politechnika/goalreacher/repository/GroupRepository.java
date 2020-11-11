@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface GroupRepository extends JpaRepository<Group_, Long>
-{
+public interface GroupRepository extends JpaRepository<Group_, Long> {
     Group_ findByGuid(String guid);
 }

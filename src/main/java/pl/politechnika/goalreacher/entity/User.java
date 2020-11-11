@@ -4,7 +4,6 @@ package pl.politechnika.goalreacher.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -17,8 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User
-{
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -34,7 +32,7 @@ public class User
     private String password;
 
     @Email
-    @UniqueElements
+    @Column(unique = true)
     private String email;
 
     @OneToMany(mappedBy = "user")
