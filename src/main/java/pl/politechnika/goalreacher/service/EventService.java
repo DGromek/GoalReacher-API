@@ -17,7 +17,7 @@ public class EventService {
         this.eventRepository = eventRepository;
     }
 
-    public List<Event> findAll() {
-        return eventRepository.findAll();
+    public List<Event> getAllByGroupId(Long groupId) {
+        return eventRepository.getAllByGroupId(groupId);
     }
 }

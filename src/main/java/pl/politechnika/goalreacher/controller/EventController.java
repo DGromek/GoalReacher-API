@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.politechnika.goalreacher.entity.Event;
 import pl.politechnika.goalreacher.service.EventService;
@@ -22,8 +23,8 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Event>> getAll() {
-        return new ResponseEntity<>(eventService.findAll(), HttpStatus.OK);
+    @GetMapping("/{groupId}")
+    public ResponseEntity<List<Event>> getAll(@PathVariable Long groupId) {
+        return new ResponseEntity<>(eventService.getAllByGroupId(groupId), HttpStatus.OK);
     }
 }

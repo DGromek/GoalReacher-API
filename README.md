@@ -7,11 +7,13 @@ https://goal-reacher-api.herokuapp.com/
 
 <table>
 <tr>
+<th>Metoda</th>
 <th>Mapping</th>
 <th>Wymagane parametry</th>
 <th>Co zwraca</th>
 </tr>
 <tr>
+<td>POST</td>
 <td>/login</td>
 <td>JSON 
 <code>
@@ -27,6 +29,12 @@ https://goal-reacher-api.herokuapp.com/
 "token" : string
 }
 </code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/events/{groupId}</td>
+<td><code>groupId : string</code></td>
+<td>JSON z wszystkimi eventami dla danej grupy</td>
 </tr>
 </table>
 
