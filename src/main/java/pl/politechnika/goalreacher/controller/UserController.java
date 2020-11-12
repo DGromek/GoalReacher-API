@@ -24,7 +24,6 @@ public class UserController {
     @GetMapping("/all") // DEV
     public ResponseEntity<Iterable<AppUser>> getAll()
     {
-
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 
