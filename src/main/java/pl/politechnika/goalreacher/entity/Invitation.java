@@ -22,9 +22,9 @@ public class Invitation
 
     @ManyToOne
     @JoinColumn(name = "invited_id")
-    private User invited;
+    private User_ invited;
 
     @ManyToOne
     @JoinColumn(name = "inviting_id")
-    private User inviting;
+    private User_ inviting;
 }
