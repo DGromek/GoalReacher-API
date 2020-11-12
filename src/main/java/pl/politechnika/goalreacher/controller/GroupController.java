@@ -10,13 +10,11 @@ import pl.politechnika.goalreacher.service.GroupService;
 
 @Controller
 @RequestMapping("/groups")
-public class GroupController
-{
+public class GroupController {
     private final GroupService groupService;
 
     @Autowired
-    public GroupController(GroupService groupService)
-    {
+    public GroupController(GroupService groupService) {
         this.groupService = groupService;
     }
 

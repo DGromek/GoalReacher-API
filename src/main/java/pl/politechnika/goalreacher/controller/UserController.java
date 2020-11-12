@@ -13,19 +13,18 @@ import pl.politechnika.goalreacher.service.UserService;
 
 @Controller
 @RequestMapping("/users")
-public class UserController
-{
+public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService)
-    {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/all") // DEV
     public ResponseEntity<Iterable<AppUser>> getAll()
     {
+
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 
@@ -33,6 +32,7 @@ public class UserController
     ResponseEntity<AppUser> newUser(@RequestBody AppUser newUser)
     {
         AppUser check = userService.findByEmail(newUser.getEmail());
+
         if (check == null)
             return new ResponseEntity<>(userService.saveUser(newUser), HttpStatus.CREATED);
         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
