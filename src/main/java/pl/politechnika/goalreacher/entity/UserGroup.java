@@ -1,10 +1,14 @@
 package pl.politechnika.goalreacher.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.politechnika.goalreacher.model.Status;
 
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
 public class UserGroup
 {
 
@@ -14,11 +18,11 @@ public class UserGroup
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User_ user;
+    AppUser user;
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-    Group_ group;
+    AppGroup group;
 
     Status status;
 

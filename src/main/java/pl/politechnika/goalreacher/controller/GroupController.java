@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pl.politechnika.goalreacher.entity.Group_;
+import pl.politechnika.goalreacher.entity.AppGroup;
 import pl.politechnika.goalreacher.service.GroupService;
 
 @Controller
@@ -19,12 +19,20 @@ public class GroupController {
     }
 
     @GetMapping("/{guid}")
-    public ResponseEntity<Group_> getGroupByGuid(@PathVariable String guid) {
+    public ResponseEntity<AppGroup> getGroupByGuid(@PathVariable String guid)
+    {
         return new ResponseEntity<>(groupService.findByGuid(guid), HttpStatus.OK);
     }
 
+    @GetMapping("/all") // DEV
+    public ResponseEntity<Iterable<AppGroup>> getAll()
+    {
+        return new ResponseEntity<>(groupService.findAllGroups(), HttpStatus.OK);
+    }
+
     @PostMapping
-    public ResponseEntity<Group_> newGroup(@RequestBody Group_ newGroup) {
+    public ResponseEntity<AppGroup> newGroup(@RequestBody AppGroup newGroup)
+    {
         return new ResponseEntity<>(groupService.saveGroup(newGroup), HttpStatus.CREATED);
     }
 }

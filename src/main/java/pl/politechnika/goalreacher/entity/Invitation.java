@@ -18,13 +18,13 @@ public class Invitation
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private Group_ group;
+    private AppGroup group;
 
     @ManyToOne
     @JoinColumn(name = "invited_id")
-    private User_ invited;
+    private AppUser invited;
 
     @ManyToOne
     @JoinColumn(name = "inviting_id")
-    private User_ inviting;
+    private AppUser inviting;
 }

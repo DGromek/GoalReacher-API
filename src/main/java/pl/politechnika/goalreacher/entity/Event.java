@@ -20,7 +20,7 @@ public class Event
 
     @ManyToOne
     @JoinColumn(name = "group_id")
-    private Group_ group;
+    private AppGroup group;
 
     @NotEmpty
     private String name;

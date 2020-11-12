@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.politechnika.goalreacher.entity.User_;
+import pl.politechnika.goalreacher.entity.AppUser;
 import pl.politechnika.goalreacher.service.UserService;
 
 @Controller
@@ -22,15 +22,19 @@ public class UserController {
     }
 
     @GetMapping("/all") // DEV
-    public ResponseEntity<Iterable<User_>> getAll() {
+    public ResponseEntity<Iterable<AppUser>> getAll()
+    {
+
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
     }
 
     @PostMapping()
-    ResponseEntity<User_> newUser(@RequestBody User_ newUser) {
-        User_ check = userService.findByEmail(newUser.getEmail());
+    ResponseEntity<AppUser> newUser(@RequestBody AppUser newUser)
+    {
+        AppUser check = userService.findByEmail(newUser.getEmail());
+
         if (check == null)
             return new ResponseEntity<>(userService.saveUser(newUser), HttpStatus.CREATED);
-        return new ResponseEntity<>(newUser, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

@@ -1,9 +1,14 @@
 package pl.politechnika.goalreacher.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.politechnika.goalreacher.Serializers.CustomUserSerializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -15,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User_
+public class AppUser
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +40,7 @@ public class User_
     private String email;
 
     @OneToMany(mappedBy = "user")
+    @JsonSerialize(using = CustomUserSerializer.class)
     List<UserGroup> groups = new ArrayList<>();
 
     @OneToMany(mappedBy = "invited")

@@ -2,7 +2,7 @@ package pl.politechnika.goalreacher.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.politechnika.goalreacher.entity.Group_;
+import pl.politechnika.goalreacher.entity.AppGroup;
 import pl.politechnika.goalreacher.repository.GroupRepository;
 
 import java.security.SecureRandom;
@@ -30,15 +30,18 @@ public class GroupService {
         return ret.toString();
     }
 
-    public Group_ findByGuid(String guid) {
+    public AppGroup findByGuid(String guid)
+    {
         return groupRepository.findByGuid(guid);
     }
 
-    public Iterable<Group_> findAllGroups() {
+    public Iterable<AppGroup> findAllGroups()
+    {
         return groupRepository.findAll();
     }
 
-    public Group_ saveGroup(Group_ newGroup) {
+    public AppGroup saveGroup(AppGroup newGroup)
+    {
         newGroup.setGuid(generateGuid(guidLength));
         return groupRepository.save(newGroup);
     }
