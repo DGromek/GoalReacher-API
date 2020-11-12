@@ -10,7 +10,7 @@ import pl.politechnika.goalreacher.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder)

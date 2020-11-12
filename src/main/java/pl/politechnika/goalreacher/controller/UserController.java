@@ -1,6 +1,5 @@
 package pl.politechnika.goalreacher.controller;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class UserController
         this.userService = userService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/all") // DEV
     public ResponseEntity<Iterable<User_>> getAll()
     {
         return new ResponseEntity<>(userService.findAllUsers(), HttpStatus.OK);
@@ -34,7 +33,7 @@ public class UserController
     ResponseEntity<User_> newUser(@RequestBody User_ newUser)
     {
         User_ check = userService.findByEmail(newUser.getEmail());
-        if(check == null)
+        if (check == null)
             return new ResponseEntity<>(userService.saveUser(newUser), HttpStatus.CREATED);
         return new ResponseEntity<>(newUser, HttpStatus.CONFLICT);
     }
