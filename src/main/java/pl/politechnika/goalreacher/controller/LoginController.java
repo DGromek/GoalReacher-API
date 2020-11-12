@@ -28,7 +28,7 @@ public class LoginController
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Credentials credentials)
+    public ResponseEntity<AppUser> login(@RequestBody Credentials credentials)
     {
         AppUser user = userService.findByEmail(credentials.getEmail());
         if (user == null || !bCryptPasswordEncoder.matches(credentials.getPassword(), user.getPassword()))
@@ -42,7 +42,7 @@ public class LoginController
         responseHeaders.set("Authorization", token);
 
         //return new ResponseEntity<>(Collections.singletonMap("token", token), HttpStatus.OK)
-        return ResponseEntity.ok().headers(responseHeaders).build();
+        return ResponseEntity.ok().headers(responseHeaders).body(user);
     }
 
 }

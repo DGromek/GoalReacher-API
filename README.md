@@ -23,12 +23,7 @@ https://goal-reacher-api.herokuapp.com/
 }
 </code>
 </td>
-<td>JSON
-<code>
-{
-"token" : string
-}
-</code></td>
+<td>JSON z zalogowanym uzytkownikiem</td>
 </tr>
 <tr>
 <td>GET</td>
