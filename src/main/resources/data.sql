@@ -1,10 +1,10 @@
 INSERT INTO app_user(email, first_name, last_name, password) VALUES
-('a.kowalski@gmail.com', 'Adam', 'Kowalski', '$2a$10$DE2NOZq3QQux4acj944fq.kGo.NjwNeCsCZyCjlMaerkpPsfHoLyq'),
-('b.nowak@gmail.com', 'Bartosz', 'Nowak', '$2a$10$DE2NOZq3QQux4acj944fq.kGo.NjwNeCsCZyCjlMaerkpPsfHoLyq'),
-('c.ebula@gmail.com', 'Celina', 'Ebula', '$2a$10$DE2NOZq3QQux4acj944fq.kGo.NjwNeCsCZyCjlMaerkpPsfHoLyq');
-('j.wick@gmail.com', 'John', 'Wick', '$2a$10$DE2NOZq3QQux4acj944fq.kGo.NjwNeCsCZyCjlMaerkpPsfHoLyq');
-('m.wazowski@gmail.com', 'Mike', 'Wazowski', '$2a$10$DE2NOZq3QQux4acj944fq.kGo.NjwNeCsCZyCjlMaerkpPsfHoLyq');
-('s.sullivan@gmail.com', 'Sully', 'Sulivan', '$2a$10$DE2NOZq3QQux4acj944fq.kGo.NjwNeCsCZyCjlMaerkpPsfHoLyq');
+('a.kowalski@gmail.com', 'Adam', 'Kowalski', '$2a$10$UMHEGIuKed.l0tTbZDGExe0Q6lywnCC0VMgjbOBa9H2WuDKbpwPuq'),
+('b.nowak@gmail.com', 'Bartosz', 'Nowak', '$2a$10$UMHEGIuKed.l0tTbZDGExe0Q6lywnCC0VMgjbOBa9H2WuDKbpwPuq'),
+('c.ebula@gmail.com', 'Celina', 'Ebula', '$2a$10$UMHEGIuKed.l0tTbZDGExe0Q6lywnCC0VMgjbOBa9H2WuDKbpwPuq'),
+('j.wick@gmail.com', 'John', 'Wick', '$2a$10$UMHEGIuKed.l0tTbZDGExe0Q6lywnCC0VMgjbOBa9H2WuDKbpwPuq'),
+('m.wazowski@gmail.com', 'Mike', 'Wazowski', '$2a$10$UMHEGIuKed.l0tTbZDGExe0Q6lywnCC0VMgjbOBa9H2WuDKbpwPuq'),
+('s.sullivan@gmail.com', 'Sully', 'Sulivan', '$2a$10$UMHEGIuKed.l0tTbZDGExe0Q6lywnCC0VMgjbOBa9H2WuDKbpwPuq');
 
 INSERT INTO app_group(description, guid, name) VALUES
 ('Grupa testowa A', 'AAAAAA', 'Grupa A'),
