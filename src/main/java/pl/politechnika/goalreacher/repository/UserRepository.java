@@ -2,11 +2,11 @@ package pl.politechnika.goalreacher.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.politechnika.goalreacher.entity.User_;
+import pl.politechnika.goalreacher.entity.AppUser;
 
 @Repository
-public interface UserRepository extends JpaRepository<User_, Long>
+public interface UserRepository extends JpaRepository<AppUser, Long>
 {
 
-    User_ findByEmail(String email);
+    AppUser findByEmail(String email);
 }
