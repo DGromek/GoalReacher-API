@@ -8,8 +8,7 @@ import pl.politechnika.goalreacher.repository.GroupRepository;
 import java.security.SecureRandom;
 
 @Service
-public class GroupService
-{
+public class GroupService {
     private final GroupRepository groupRepository;
 
     private static final String alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -17,16 +16,13 @@ public class GroupService
     private static final int guidLength = 6;
 
     @Autowired
-    public GroupService(GroupRepository groupRepository)
-    {
+    public GroupService(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
     }
 
-    private String generateGuid(int length)
-    {
+    private String generateGuid(int length) {
         StringBuilder ret;
-        do
-        {
+        do {
             ret = new StringBuilder();
             for (int i = 0; i < length; i++)
                 ret.append(alphanumeric.charAt(random.nextInt(alphanumeric.length())));
@@ -34,18 +30,15 @@ public class GroupService
         return ret.toString();
     }
 
-    public Group_ findByGuid(String guid)
-    {
+    public Group_ findByGuid(String guid) {
         return groupRepository.findByGuid(guid);
     }
 
-    public Iterable<Group_> findAllGroups()
-    {
+    public Iterable<Group_> findAllGroups() {
         return groupRepository.findAll();
     }
 
-    public Group_ saveGroup(Group_ newGroup)
-    {
+    public Group_ saveGroup(Group_ newGroup) {
         newGroup.setGuid(generateGuid(guidLength));
         return groupRepository.save(newGroup);
     }

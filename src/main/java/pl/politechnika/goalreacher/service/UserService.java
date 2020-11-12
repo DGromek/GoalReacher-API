@@ -13,20 +13,17 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder)
-    {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public User_ saveUser(User_ newUser)
-    {
+    public User_ saveUser(User_ newUser) {
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         return userRepository.save(newUser);
     }
 
-    public Iterable<User_> findAllUsers()
-    {
+    public Iterable<User_> findAllUsers() {
         return userRepository.findAll();
     }
 
