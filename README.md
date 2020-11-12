@@ -36,6 +36,61 @@ https://goal-reacher-api.herokuapp.com/
 <td><code>groupId : string</code></td>
 <td>JSON z wszystkimi eventami dla danej grupy</td>
 </tr>
+<tr>
+<td>GET</td>
+<td>/users/all</td>
+<td></td>
+<td>JSON ze wszystkimi uzytkownikami</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/users</td>
+<td>
+<code>JSON
+{
+    "firstName": string,
+    "lastName": string,
+    "email": string,
+    "password": string
+ }
+</code></td>
+<td>JSON z utworzonym uzytkownikiem lub kod 422 jeżeli email jest zajęty</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/groups/all</td>
+<td></td>
+<td>JSON ze wszystkimi grupami</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/groups/{guid}</td>
+<td><code>guid : string</code></td>
+<td>JSON grupą o danym guid lub 404 jeżeli takiej nie ma</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/groups</td>
+<td><code>JSON
+{
+    "name": string,
+    "description": string
+}
+</code></td>
+<td>JSON z utworzoną grupą</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/joinGroup</td>
+<td><code>JSON
+{
+    "targetGroupGuid": string,
+    "userId": string
+}
+</code></td>
+<td>JSON z zaktualizowanym userem lub 422 jeżeli coś jest nie tak</td>
+</tr>
+
 </table>
 
 <h3>Dodatkowe informacje</h3>

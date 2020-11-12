@@ -30,7 +30,7 @@ public class UserGroupController
         UserGroup joined = userGroupRepository.joinGroup(joinGroupDTO);
 
         if(joined == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 
         return new ResponseEntity<>(joined.getUser(), HttpStatus.OK);
     }

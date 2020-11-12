@@ -21,7 +21,11 @@ public class GroupController {
     @GetMapping("/{guid}")
     public ResponseEntity<AppGroup> getGroupByGuid(@PathVariable String guid)
     {
-        return new ResponseEntity<>(groupService.findByGuid(guid), HttpStatus.OK);
+        AppGroup ret = groupService.findByGuid(guid);
+        if(ret == null)
+            return ResponseEntity.notFound().build();
+
+        return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
     @GetMapping("/all") // DEV
