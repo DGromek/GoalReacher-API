@@ -14,7 +14,7 @@ public class UserGroup
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    User user;
+    User_ user;
 
     @ManyToOne
     @JoinColumn(name = "group_id")

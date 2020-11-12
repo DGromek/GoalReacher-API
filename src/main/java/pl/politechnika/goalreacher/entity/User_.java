@@ -16,7 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public class User_
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -28,7 +29,6 @@ public class User {
     private String lastName;
 
     @NotBlank
-    @Min(6)
     private String password;
 
     @Email
