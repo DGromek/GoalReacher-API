@@ -9,7 +9,7 @@ INSERT INTO app_user(email, first_name, last_name, password) VALUES
 INSERT INTO app_group(description, guid, name) VALUES
 ('Grupa testowa A', 'AAAAAA', 'A Grupa'),
 ('Grupa testowa B', 'BBBBBB', 'B Grupa'),
-('Grupa testowa C', 'CCCCCC', 'C Grupa');
+('Grupa testowa C', 'CCCCCC', 'C Grupa'),
 ('Grupa testowa D', 'DDDDDD', 'D Grupa'),
 ('Grupa testowa F', 'FFFFFF', 'F Grupa'),
 ('Grupa testowa G', 'GGGGGG', 'G Grupa');
