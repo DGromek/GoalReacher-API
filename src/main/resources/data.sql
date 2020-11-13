@@ -7,12 +7,12 @@ INSERT INTO app_user(email, first_name, last_name, password) VALUES
 ('s.sullivan@gmail.com', 'Sully', 'Sulivan', '$2a$10$UMHEGIuKed.l0tTbZDGExe0Q6lywnCC0VMgjbOBa9H2WuDKbpwPuq');
 
 INSERT INTO app_group(description, guid, name) VALUES
-('Grupa testowa A', 'AAAAAA', 'Grupa A'),
-('Grupa testowa B', 'BBBBBB', 'Grupa B'),
-('Grupa testowa C', 'CCCCCC', 'Grupa C');
-('Grupa testowa D', 'DDDDDD', 'Grupa D'),
-('Grupa testowa F', 'FFFFFF', 'Grupa F'),
-('Grupa testowa G', 'GGGGGG', 'Grupa G');
+('Grupa testowa A', 'AAAAAA', 'A Grupa'),
+('Grupa testowa B', 'BBBBBB', 'B Grupa'),
+('Grupa testowa C', 'CCCCCC', 'C Grupa');
+('Grupa testowa D', 'DDDDDD', 'D Grupa'),
+('Grupa testowa F', 'FFFFFF', 'F Grupa'),
+('Grupa testowa G', 'GGGGGG', 'G Grupa');
 
 INSERT INTO user_group(google_calendar, status, group_id, user_id) VALUES
 (false, 0, 1, 1),
