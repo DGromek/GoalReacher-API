@@ -1,6 +1,5 @@
 package pl.politechnika.goalreacher.service;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.politechnika.goalreacher.Exceptions.GroupNotExistingException;
@@ -9,8 +8,8 @@ import pl.politechnika.goalreacher.Exceptions.UserNotInGroupException;
 import pl.politechnika.goalreacher.dto.ChangeStatusDTO;
 import pl.politechnika.goalreacher.dto.JoinGroupDTO;
 import pl.politechnika.goalreacher.entity.AppGroup;
-import pl.politechnika.goalreacher.entity.UserGroup;
 import pl.politechnika.goalreacher.entity.AppUser;
+import pl.politechnika.goalreacher.entity.UserGroup;
 import pl.politechnika.goalreacher.model.Status;
 import pl.politechnika.goalreacher.repository.GroupRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
@@ -61,12 +60,12 @@ public class UserGroupService
     {
         AppGroup appGroup = groupRepository.findByGuid(changeStatusDTO.getTargetGroupGuid());
         Optional<AppUser> appUser = userRepository.findById(changeStatusDTO.getUserId());
-        if(!appUser.isPresent())
+        if (!appUser.isPresent())
             throw new UserNotExistingException();
-        if(appGroup == null)
+        if (appGroup == null)
             throw new GroupNotExistingException();
         UserGroup toChange = userGroupRepository.findByUserAndGroup(appUser.get(), appGroup);
-        if(toChange == null)
+        if (toChange == null)
             throw new UserNotInGroupException();
 
         toChange.setStatus(changeStatusDTO.getNewStatus());
@@ -78,9 +77,9 @@ public class UserGroupService
     {
         AppGroup appGroup = groupRepository.findByGuid(changeStatusDTO.getTargetGroupGuid());
         Optional<AppUser> appUser = userRepository.findById(changeStatusDTO.getUserId());
-        if(!appUser.isPresent())
+        if (!appUser.isPresent())
             throw new UserNotExistingException();
-        if(appGroup == null)
+        if (appGroup == null)
             throw new GroupNotExistingException();
         UserGroup toChange = userGroupRepository.findByUserAndGroup(appUser.get(), appGroup);
 

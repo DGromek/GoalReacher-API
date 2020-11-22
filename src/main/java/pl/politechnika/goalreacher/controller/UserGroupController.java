@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.politechnika.goalreacher.dto.ChangeStatusDTO;
 import pl.politechnika.goalreacher.dto.JoinGroupDTO;
-import pl.politechnika.goalreacher.entity.UserGroup;
 import pl.politechnika.goalreacher.entity.AppUser;
+import pl.politechnika.goalreacher.entity.UserGroup;
 import pl.politechnika.goalreacher.service.UserGroupService;
 
 @Controller
@@ -28,7 +28,7 @@ public class UserGroupController
     {
         UserGroup joined = userGroupRepository.joinGroup(joinGroupDTO);
 
-        if(joined == null)
+        if (joined == null)
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 
         return new ResponseEntity<>(joined.getUser(), HttpStatus.OK);
@@ -41,8 +41,7 @@ public class UserGroupController
         {
             UserGroup toChange = userGroupRepository.changeStatus(changeStatusDTO);
             return new ResponseEntity<>(toChange.getUser(), HttpStatus.OK);
-        }
-        catch(Exception e)
+        } catch (Exception e)
         {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -55,8 +54,7 @@ public class UserGroupController
         {
             userGroupRepository.leaveGroup(changeStatusDTO);
             return new ResponseEntity<>(HttpStatus.OK);
-        }
-        catch(Exception e)
+        } catch (Exception e)
         {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
