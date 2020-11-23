@@ -11,6 +11,6 @@ import pl.politechnika.goalreacher.model.Status;
 public class ChangeStatusDTO
 {
     private String targetGroupGuid;
-    private long userId;
+    private String targetUserEmail;
     private Status newStatus;
 }

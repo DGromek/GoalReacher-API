@@ -3,12 +3,14 @@ package pl.politechnika.goalreacher.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.politechnika.goalreacher.dto.ChangeStatusDTO;
 import pl.politechnika.goalreacher.dto.JoinGroupDTO;
 import pl.politechnika.goalreacher.entity.AppUser;
 import pl.politechnika.goalreacher.entity.UserGroup;
+import pl.politechnika.goalreacher.model.Credentials;
 import pl.politechnika.goalreacher.service.UserGroupService;
 
 @Controller
@@ -35,26 +37,28 @@ public class UserGroupController
     }
 
     @PutMapping("/users/changeStatus")
-    public ResponseEntity<AppUser> changeUserStatus(@RequestBody ChangeStatusDTO changeStatusDTO)
+    public ResponseEntity<AppUser> changeUserStatus(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication credentials)
     {
         try
         {
-            UserGroup toChange = userGroupRepository.changeStatus(changeStatusDTO);
+            UserGroup toChange = userGroupRepository.changeStatus(changeStatusDTO, credentials);
             return new ResponseEntity<>(toChange.getUser(), HttpStatus.OK);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     @DeleteMapping("users/leaveGroup")
-    public ResponseEntity<AppUser> leaveGroup(@RequestBody ChangeStatusDTO changeStatusDTO)
+    public ResponseEntity<AppUser> leaveGroup(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication authentication)
     {
         try
         {
-            userGroupRepository.leaveGroup(changeStatusDTO);
+            userGroupRepository.leaveGroup(changeStatusDTO, authentication);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
