@@ -3,17 +3,18 @@ package pl.politechnika.goalreacher.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import pl.politechnika.goalreacher.dto.ChangeStatusDTO;
 import pl.politechnika.goalreacher.dto.JoinGroupDTO;
-import pl.politechnika.goalreacher.entity.UserGroup;
 import pl.politechnika.goalreacher.entity.AppUser;
+import pl.politechnika.goalreacher.entity.UserGroup;
+import pl.politechnika.goalreacher.model.Credentials;
 import pl.politechnika.goalreacher.service.UserGroupService;
 
 @Controller
-@RequestMapping("/joinGroup")
+@RequestMapping()
 public class UserGroupController
 {
     private final UserGroupService userGroupRepository;
@@ -24,15 +25,42 @@ public class UserGroupController
         this.userGroupRepository = userGroupRepository;
     }
 
-    @PostMapping()
+    @PostMapping("/joinGroup")
     public ResponseEntity<AppUser> joinGroup(@RequestBody JoinGroupDTO joinGroupDTO)
     {
         UserGroup joined = userGroupRepository.joinGroup(joinGroupDTO);
 
-        if(joined == null)
+        if (joined == null)
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 
         return new ResponseEntity<>(joined.getUser(), HttpStatus.OK);
     }
 
+    @PutMapping("/users/changeStatus")
+    public ResponseEntity<AppUser> changeUserStatus(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication credentials)
+    {
+        try
+        {
+            UserGroup toChange = userGroupRepository.changeStatus(changeStatusDTO, credentials);
+            return new ResponseEntity<>(toChange.getUser(), HttpStatus.OK);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    @DeleteMapping("users/leaveGroup")
+    public ResponseEntity<AppUser> leaveGroup(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication authentication)
+    {
+        try
+        {
+            userGroupRepository.leaveGroup(changeStatusDTO, authentication);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+    }
 }
