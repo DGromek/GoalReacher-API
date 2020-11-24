@@ -85,6 +85,30 @@ https://goal-reacher-api.herokuapp.com/
 </code></td>
 <td>JSON z zaktualizowanym userem lub 422 jeżeli coś jest nie tak</td>
 </tr>
+<tr>
+<td>PUT</td>
+<td>/users/changeStatus</td>
+<td>Authorization Bearer Token, Body:<code>JSON
+{
+    "targetGroupGuid": string,
+    "targetUserEmail": string,
+    "newRole": string //USER, ADMIN, PENDING, CREATOR
+}
+</code></td>
+<td>JSON z zaktualizowanym userem lub 422 jeżeli coś jest nie tak</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/users/leaveGroup</td>
+<td>Authorization Bearer Token, Body:<code>JSON
+{
+    "targetGroupGuid": "GGGGGG",
+    "targetUserEmail": "j.wick@gmail.com"
+}
+</code></td>
+<td>200 lub 422</td>
+</tr>
+
 
 </table>
 
