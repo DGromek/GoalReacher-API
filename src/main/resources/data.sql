@@ -14,7 +14,7 @@ INSERT INTO app_group(description, guid, name) VALUES
 ('Grupa testowa F', 'FFFFFF', 'F Grupa'),
 ('Grupa testowa G', 'GGGGGG', 'G Grupa');
 
-INSERT INTO user_group(google_calendar, status, group_id, user_id) VALUES
+INSERT INTO user_group(google_calendar, role, group_id, user_id) VALUES
 (false, 0, 1, 1),
 (false, 0, 2, 2),
 (false, 0, 3, 3),

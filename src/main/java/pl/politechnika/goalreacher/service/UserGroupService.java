@@ -12,8 +12,7 @@ import pl.politechnika.goalreacher.dto.JoinGroupDTO;
 import pl.politechnika.goalreacher.entity.AppGroup;
 import pl.politechnika.goalreacher.entity.AppUser;
 import pl.politechnika.goalreacher.entity.UserGroup;
-import pl.politechnika.goalreacher.model.Credentials;
-import pl.politechnika.goalreacher.model.Status;
+import pl.politechnika.goalreacher.model.Role;
 import pl.politechnika.goalreacher.repository.GroupRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
 import pl.politechnika.goalreacher.repository.UserRepository;
@@ -54,7 +53,7 @@ public class UserGroupService
         newUserGroup.setUser(joiningUser.get());
         newUserGroup.setGroup(joiningGroup);
         newUserGroup.setGoogleCalendar(false);
-        newUserGroup.setStatus(Status.PENDING);
+        newUserGroup.setRole(Role.PENDING);
 
         return userGroupRepository.save(newUserGroup);
     }
@@ -70,17 +69,17 @@ public class UserGroupService
         return userGroupRepository.findByUserAndGroup(appUser, appGroup);
     }
 
-    private boolean canOverrideStatus(UserGroup changee, UserGroup changer, Status status2B)
+    private boolean canOverrideStatus(UserGroup changee, UserGroup changer, Role role2B)
     {
 
-        if(status2B != null && status2B.ordinal() == 0)
+        if(role2B != null && role2B.ordinal() == 0)
             return false;
         if(changee.getGroup().getId() == changer.getGroup().getId())
         {
-            if(changer.getStatus().ordinal() == 0 && status2B.ordinal() > 0)
+            if(changer.getRole().ordinal() == 0 && role2B.ordinal() > 0)
                 return true;
 
-            return changer.getStatus().ordinal() == 1 && changer.getStatus().ordinal() < changee.getStatus().ordinal();
+            return changer.getRole().ordinal() == 1 && changer.getRole().ordinal() < changee.getRole().ordinal();
         }
         return false;
     }
@@ -92,8 +91,8 @@ public class UserGroupService
         if(toChange == null || changer == null)
             throw new UserNotInGroupException();
 
-        if(canOverrideStatus(toChange, changer, changeStatusDTO.getNewStatus()))
-            toChange.setStatus(changeStatusDTO.getNewStatus());
+        if(canOverrideStatus(toChange, changer, changeStatusDTO.getNewRole()))
+            toChange.setRole(changeStatusDTO.getNewRole());
         else
             throw new NotAuthorizedException();
 
@@ -114,7 +113,7 @@ public class UserGroupService
         }
         else
         {
-            if(changer.getStatus() == Status.CREATOR || (changer.getStatus() == Status.ADMIN && toChange.getStatus().ordinal() > 1))
+            if(changer.getRole() == Role.CREATOR || (changer.getRole() == Role.ADMIN && toChange.getRole().ordinal() > 1))
             {
                 userGroupRepository.delete(toChange);
                 return;

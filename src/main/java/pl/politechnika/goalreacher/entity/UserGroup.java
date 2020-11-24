@@ -2,7 +2,7 @@ package pl.politechnika.goalreacher.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.politechnika.goalreacher.model.Status;
+import pl.politechnika.goalreacher.model.Role;
 
 import javax.persistence.*;
 
@@ -24,7 +24,7 @@ public class UserGroup
     @JoinColumn(name = "group_id")
     AppGroup group;
 
-    Status status;
+    Role role;
 
     private boolean googleCalendar;
 

@@ -1,6 +1,7 @@
 package pl.politechnika.goalreacher.model;
 
-public enum Status {
+public enum Role
+{
     CREATOR,
     ADMIN,
     USER,
