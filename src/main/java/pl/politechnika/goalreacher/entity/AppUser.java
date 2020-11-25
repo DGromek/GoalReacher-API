@@ -1,9 +1,7 @@
 package pl.politechnika.goalreacher.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +31,7 @@ public class AppUser
     private String lastName;
 
     @NotBlank
+    @JsonIgnore
     private String password;
 
     @Email
