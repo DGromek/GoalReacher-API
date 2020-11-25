@@ -52,11 +52,11 @@ public class GroupService
         return groupRepository.findAll();
     }
 
-    public AppGroup saveGroup(AppGroup newGroup, Authentication credentials)
+    public AppGroup saveGroup(AppGroup newGroup, Authentication authentication)
     {
         newGroup.setGuid(generateGuid());
 
-        AppUser user = userRepository.findByEmail(credentials.getPrincipal().toString());
+        AppUser user = userRepository.findByEmail(authentication.getPrincipal().toString());
         AppGroup group = groupRepository.save(newGroup);
 
         UserGroup newUserGroup = new UserGroup();

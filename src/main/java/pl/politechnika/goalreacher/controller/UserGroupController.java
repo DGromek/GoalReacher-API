@@ -36,11 +36,11 @@ public class UserGroupController
     }
 
     @PutMapping("/users/changeStatus")
-    public ResponseEntity<UserGroup> changeUserStatus(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication credentials)
+    public ResponseEntity<UserGroup> changeUserStatus(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication authentication)
     {
         try
         {
-            UserGroup toChange = userGroupRepository.changeStatus(changeStatusDTO, credentials);
+            UserGroup toChange = userGroupRepository.changeStatus(changeStatusDTO, authentication);
             return new ResponseEntity<>(toChange, HttpStatus.OK);
         } catch (Exception e)
         {

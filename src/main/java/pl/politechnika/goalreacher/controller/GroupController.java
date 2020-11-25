@@ -38,8 +38,8 @@ public class GroupController
     }
 
     @PostMapping
-    public ResponseEntity<AppGroup> newGroup(@RequestBody AppGroup newGroup, Authentication credentials)
+    public ResponseEntity<AppGroup> newGroup(@RequestBody AppGroup newGroup, Authentication authentication)
     {
-        return new ResponseEntity<>(groupService.saveGroup(newGroup, credentials), HttpStatus.CREATED);
+        return new ResponseEntity<>(groupService.saveGroup(newGroup, authentication), HttpStatus.CREATED);
     }
 }
