@@ -53,6 +53,38 @@ https://goal-reacher-api.herokuapp.com/
 </tr>
 <tr>
 <td>GET</td>
+<td>/users</td>
+<td>
+Authorization Bearer Token
+</td>
+<td>JSON z zalogowanym uzytkownikiem lub 403</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/users</td>
+<td>
+Authorization Bearer Token
+</td>
+<td>200 jeżeli użytkownik poprawnie usunięty lub 403</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/users</td>
+<td>
+Authorization Bearer Token
+<code>JSON
+{
+    "firstName": string optional,
+    "lastName": string optional,
+    "email": string optional,
+    "password": string optional
+}
+</code>
+</td>
+<td>Json z zaktualizowanym użytkownikiem lub 422</td>
+</tr>
+<tr>
+<td>GET</td>
 <td>/groups/all</td>
 <td></td>
 <td>JSON ze wszystkimi grupami</td>
@@ -95,7 +127,7 @@ https://goal-reacher-api.herokuapp.com/
     "newRole": string //USER, ADMIN, PENDING, CREATOR
 }
 </code></td>
-<td>JSON z zaktualizowanym userem lub 422 jeżeli coś jest nie tak</td>
+<td>JSON z zaktualizowanym UserGroup lub 422 jeżeli coś jest nie tak</td>
 </tr>
 <tr>
 <td>DELETE</td>
