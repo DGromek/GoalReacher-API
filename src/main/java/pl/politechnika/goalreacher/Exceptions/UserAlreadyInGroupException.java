@@ -1,5 +1,9 @@
 package pl.politechnika.goalreacher.Exceptions;
 
-public class UserAlreadyInGroupException
+public class UserAlreadyInGroupException extends  Exception
 {
+    public UserAlreadyInGroupException()
+    {
+        super();
+    }
 }

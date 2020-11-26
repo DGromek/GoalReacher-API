@@ -102,13 +102,30 @@ https://goal-reacher-api.herokuapp.com/
 <td>/users/leaveGroup</td>
 <td>Authorization Bearer Token, Body:<code>JSON
 {
-    "targetGroupGuid": "GGGGGG",
-    "targetUserEmail": "j.wick@gmail.com"
+    "targetGroupGuid": string,
+    "targetUserEmail": string
 }
 </code></td>
 <td>200 lub 422</td>
 </tr>
-
+<tr>
+<td>POST</td>
+<td>/invitations/td>
+<td>Authorization Bearer Token, Body:<code>JSON
+{
+    "guid": string,
+    "invitedEmail": string
+}
+</code></td>
+<td>Nowo utworzone zaproszenie, 401 jeżeli token jest nieważny lub dany użytkownik nie ma uprawnień do zapraszania lub 422 gdy inne dane są błędne</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/joinFromInvitation</td>
+<td>Authorization Bearer Token, param: invitationId long
+</td>
+<td>UserGroup po dołączeniu, 401 jeżeli token nie zgadza się z użytkownikiem którego było to zaproszenie lub 422 gdy inne dane są błędne</td>
+</tr>
 
 </table>
 

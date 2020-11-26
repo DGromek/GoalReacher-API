@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomInvitationsSerializer extends StdSerializer<AppUser>
+public class CustomInvitationsUserSerializer extends StdSerializer<AppUser>
 {
-    protected CustomInvitationsSerializer(Class<AppUser> t)
+    protected CustomInvitationsUserSerializer(Class<AppUser> t)
     {
         super(t);
     }
 
-    public CustomInvitationsSerializer()
+    public CustomInvitationsUserSerializer()
     {
         this(null);
     }
@@ -30,18 +30,6 @@ public class CustomInvitationsSerializer extends StdSerializer<AppUser>
         serialized.setEmail(appUser.getEmail());
         serialized.setFirstName(appUser.getFirstName());
         serialized.setLastName(appUser.getLastName());
-        serialized.setInvitesGot(appUser.getInvitesGot());
-        serialized.setInvitesSent(appUser.getInvitesSent());
-
-        List<UserGroup> groups = new ArrayList<>();
-        for(UserGroup g : appUser.getGroups())
-        {
-            g.setUser(null);
-            g.getGroup().setUsers(null);
-            groups.add(g);
-        }
-
-        serialized.setGroups(groups);
 
         jsonGenerator.writeObject(serialized);
     }
