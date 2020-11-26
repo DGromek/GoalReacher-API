@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import pl.politechnika.goalreacher.Exceptions.NotAuthorizedException;
 import pl.politechnika.goalreacher.dto.ChangeStatusDTO;
 import pl.politechnika.goalreacher.dto.JoinGroupDTO;
 import pl.politechnika.goalreacher.entity.AppUser;
@@ -59,5 +60,22 @@ public class UserGroupController
         {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
+    }
+
+    @PostMapping("/joinFromInvitation")
+    public ResponseEntity<UserGroup> joinFromInvitation(@RequestParam long invitationId, Authentication authentication)
+    {
+        try
+        {
+            return new ResponseEntity<>(userGroupRepository.joinFromInvitation(invitationId, authentication), HttpStatus.OK);
+        } catch (NotAuthorizedException e)
+        {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
     }
 }
