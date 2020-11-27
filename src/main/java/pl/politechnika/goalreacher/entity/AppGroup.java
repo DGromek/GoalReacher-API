@@ -30,17 +30,17 @@ public class AppGroup
     @NotEmpty
     private String description;
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     @JsonSerialize(using = CustomGroupSerializer.class)
     private List<UserGroup> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<Event> events = new ArrayList<>();
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     private List<Note> notes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     @JsonBackReference(value = "invitations")
-    private List<Note> invitations = new ArrayList<>();
+    private List<Invitation> invitations = new ArrayList<>();
 }

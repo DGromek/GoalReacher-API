@@ -1,5 +1,6 @@
 package pl.politechnika.goalreacher.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.politechnika.goalreacher.entity.AppGroup;
@@ -23,6 +24,7 @@ public class GroupService
     private final SecureRandom random = new SecureRandom();
     private static final int guidLength = 6;
 
+    @Autowired
     public GroupService(GroupRepository groupRepository, UserGroupRepository userGroupRepository, UserRepository userRepository)
     {
         this.groupRepository = groupRepository;
@@ -66,8 +68,16 @@ public class GroupService
         newUserGroup.setRole(Role.CREATOR);
         userGroupRepository.save(newUserGroup);
 
-        AppGroup retGroup = groupRepository.findByGuid(group.getGuid());
+        return groupRepository.findByGuid(group.getGuid());
+    }
 
-        return retGroup;
+    public UserGroup deleteGroup(String guid, AppUser user)
+    {
+        AppGroup toDel = groupRepository.findByGuid(guid);
+        UserGroup userGroup = userGroupRepository.findByUserAndGroup(user, toDel);
+        if (userGroup.getRole() != Role.CREATOR) return userGroup;
+
+        groupRepository.delete(toDel);
+        return null;
     }
 }

@@ -1,24 +1,27 @@
 package pl.politechnika.goalreacher.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.politechnika.goalreacher.entity.AppGroup;
+import pl.politechnika.goalreacher.entity.AppUser;
+import pl.politechnika.goalreacher.entity.UserGroup;
 import pl.politechnika.goalreacher.service.GroupService;
+import pl.politechnika.goalreacher.service.UserService;
 
 @Controller
 @RequestMapping("/groups")
 public class GroupController
 {
     private final GroupService groupService;
+    private final UserService userService;
 
-    @Autowired
-    public GroupController(GroupService groupService)
+    public GroupController(GroupService groupService, UserService userService)
     {
         this.groupService = groupService;
+        this.userService = userService;
     }
 
     @GetMapping("/{guid}")
@@ -41,5 +44,15 @@ public class GroupController
     public ResponseEntity<AppGroup> newGroup(@RequestBody AppGroup newGroup, Authentication authentication)
     {
         return new ResponseEntity<>(groupService.saveGroup(newGroup, authentication), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{guid}")
+    public ResponseEntity<Object> deleteGroup(@PathVariable String guid, Authentication authentication)
+    {
+        AppUser user = userService.findByEmail(authentication.getPrincipal().toString());
+        UserGroup deleted = groupService.deleteGroup(guid, user);
+        if (user == null || deleted != null) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
