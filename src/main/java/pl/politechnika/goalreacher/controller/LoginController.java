@@ -16,6 +16,7 @@ import pl.politechnika.goalreacher.entity.AppUser;
 import pl.politechnika.goalreacher.model.Credentials;
 import pl.politechnika.goalreacher.service.UserService;
 import pl.politechnika.goalreacher.utils.JWTUtils;
+import pl.politechnika.goalreacher.utils.OperatingSystem;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -46,10 +47,14 @@ public class LoginController {
     }
 
     @PostMapping("/googleLogin")
-    public ResponseEntity<AppUser> googleLogin(HttpServletResponse res, @RequestParam String googleAuthToken) throws GeneralSecurityException, IOException {
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new JacksonFactory())
-                .setAudience(Collections.singletonList(System.getenv("CLIENT_ID")))
-                .build();
+    public ResponseEntity<AppUser> googleLogin(HttpServletResponse res, @RequestParam String googleAuthToken, @RequestParam OperatingSystem os) throws GeneralSecurityException, IOException {
+        GoogleIdTokenVerifier.Builder verifierBuilder = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new JacksonFactory());
+        if (os == OperatingSystem.ANDROID) {
+            verifierBuilder.setAudience(Collections.singletonList(System.getenv("ANDROID_CLIENT_ID")));
+        } else if (os == OperatingSystem.IOS) {
+            verifierBuilder.setAudience(Collections.singletonList(System.getenv("IOS_CLIENT_ID")));
+        }
+        GoogleIdTokenVerifier verifier = verifierBuilder.build();
 
         GoogleIdToken idToken = verifier.verify(googleAuthToken);
         if (idToken != null) {
