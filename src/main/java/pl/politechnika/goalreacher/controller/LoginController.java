@@ -47,7 +47,7 @@ public class LoginController {
     }
 
     @PostMapping("/googleLogin")
-    public ResponseEntity<AppUser> googleLogin(HttpServletResponse res, @RequestParam String googleAuthToken, @RequestParam OperatingSystem os) throws GeneralSecurityException, IOException {
+    public ResponseEntity<AppUser> googleLogin(HttpServletResponse res, @RequestParam String googleAuthToken) throws GeneralSecurityException, IOException {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new JacksonFactory())
                  .setAudience(Arrays.asList(System.getenv("ANDROID_CLIENT_ID"), System.getenv("IOS_CLIENT_ID")))
                  .build();
