@@ -16,30 +16,33 @@ import pl.politechnika.goalreacher.entity.AppUser;
 import pl.politechnika.goalreacher.model.Credentials;
 import pl.politechnika.goalreacher.service.UserService;
 import pl.politechnika.goalreacher.utils.JWTUtils;
-import pl.politechnika.goalreacher.utils.OperatingSystem;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Controller
-public class LoginController {
+public class LoginController
+{
 
     private final UserService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public LoginController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public LoginController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder)
+    {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AppUser> login(HttpServletResponse res, @RequestBody Credentials credentials) {
+    public ResponseEntity<AppUser> login(HttpServletResponse res, @RequestBody Credentials credentials)
+    {
         AppUser user = userService.findByEmail(credentials.getEmail());
-        if (user == null || !bCryptPasswordEncoder.matches(credentials.getPassword(), user.getPassword())) {
+        if (user == null || !bCryptPasswordEncoder.matches(credentials.getPassword(), user.getPassword()))
+        {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         res.addHeader("Authorization", JWTUtils.getToken(user.getEmail()));
@@ -47,18 +50,21 @@ public class LoginController {
     }
 
     @PostMapping("/googleLogin")
-    public ResponseEntity<AppUser> googleLogin(HttpServletResponse res, @RequestParam String googleAuthToken) throws GeneralSecurityException, IOException {
+    public ResponseEntity<AppUser> googleLogin(HttpServletResponse res, @RequestParam String googleAuthToken) throws GeneralSecurityException, IOException
+    {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new JacksonFactory())
-                 .setAudience(Arrays.asList(System.getenv("ANDROID_CLIENT_ID"), System.getenv("IOS_CLIENT_ID")))
-                 .build();
+                .setAudience(Arrays.asList(System.getenv("ANDROID_CLIENT_ID"), System.getenv("IOS_CLIENT_ID")))
+                .build();
 
         GoogleIdToken idToken = verifier.verify(googleAuthToken);
-        if (idToken != null) {
+        if (idToken != null)
+        {
             GoogleIdToken.Payload payload = idToken.getPayload();
             String email = payload.getEmail();
 
             AppUser user = userService.findByEmail(email);
-            if (user == null) {
+            if (user == null)
+            {
                 user = new AppUser();
                 user.setEmail(payload.getEmail());
                 user.setFirstName((String) payload.get("given_name"));
