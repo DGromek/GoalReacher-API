@@ -107,6 +107,12 @@ Authorization Bearer Token
 <td>JSON z utworzoną grupą</td>
 </tr>
 <tr>
+<td>DELETE</td>
+<td>/groups/{guid}</td>
+<td><code> guid: string </code></td>
+<td>200 lub 403</td>
+</tr>
+<tr>
 <td>POST</td>
 <td>/joinGroup</td>
 <td><code>JSON
@@ -149,14 +155,14 @@ Authorization Bearer Token
     "invitedEmail": string
 }
 </code></td>
-<td>Nowo utworzone zaproszenie, 401 jeżeli token jest nieważny lub dany użytkownik nie ma uprawnień do zapraszania lub 422 gdy inne dane są błędne</td>
+<td>Nowo utworzone zaproszenie, 403 jeżeli token jest nieważny lub dany użytkownik nie ma uprawnień do zapraszania lub 422 gdy inne dane są błędne</td>
 </tr>
 <tr>
 <td>POST</td>
 <td>/joinFromInvitation</td>
 <td>Authorization Bearer Token, param: invitationId long
 </td>
-<td>UserGroup po dołączeniu, 401 jeżeli token nie zgadza się z użytkownikiem którego było to zaproszenie lub 422 gdy inne dane są błędne</td>
+<td>UserGroup po dołączeniu, 403 jeżeli token nie zgadza się z użytkownikiem którego było to zaproszenie lub 422 gdy inne dane są błędne</td>
 </tr>
 
 </table>
