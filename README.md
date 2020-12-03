@@ -148,7 +148,7 @@ Authorization Bearer Token
 </tr>
 <tr>
 <td>POST</td>
-<td>/invitations/td>
+<td>/invitations</td>
 <td>Authorization Bearer Token, Body:<code>JSON
 {
     "guid": string,
@@ -163,6 +163,58 @@ Authorization Bearer Token
 <td>Authorization Bearer Token, param: invitationId long
 </td>
 <td>UserGroup po dołączeniu, 403 jeżeli token nie zgadza się z użytkownikiem którego było to zaproszenie lub 422 gdy inne dane są błędne</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/events</td>
+<td>
+<code>
+JSON: 
+{
+    "guid": string,
+    "name": string,
+    "description": string,
+    "datetime": string format:"dd/MM/yyyy HH:mm:ss"
+}
+</code>
+</td>
+<td>Nowo utworzony event lub 422</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/events</td>
+<td>
+<code>
+JSON: 
+{
+    "name": string,
+    "description": string,
+    "datetime": string format:"dd/MM/yyyy HH:mm:ss"
+}
+</code>
+</td>
+<td>Zupdatowany event lub 422</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/events</td>
+<td>
+param: eventId long
+</td>
+<td>200 lub 422</td>
+</tr>
+
+<tr>
+<td>GET</td>
+<td>/events/{groupId}/{month}/{year}</td>
+<td>
+<code>
+groupId: long,
+month: int <0-11>,
+year: int
+</code>
+</td>
+<td>posortowana lista eventow z danego miesiaca i roku</td>
 </tr>
 
 </table>
