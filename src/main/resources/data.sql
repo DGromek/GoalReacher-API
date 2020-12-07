@@ -56,3 +56,10 @@ INSERT INTO user_group(google_calendar, role, group_id, user_id) VALUES
 
 INSERT INTO invitation(group_id, invited_id, inviting_id) VALUES
 (5, 1, 5);
+
+INSERT INTO event(datetime, description, name, group_id) values
+('2020-12-2 00:00:00', 'Event na 2 grudnia', 'Event 2', 5),
+('2020-12-4 00:00:00', 'Event na 4 grudnia', 'Event 4', 5),
+('2020-12-3 00:00:00', 'Event na 3 grudnia', 'Event 3', 5),
+('2020-12-5 00:00:00', 'Event na 5 grudnia', 'Event 5', 5),
+('2020-12-6 00:00:00', 'Event na 6 grudnia', 'Event 6', 5);

@@ -3,11 +3,14 @@ package pl.politechnika.goalreacher.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.politechnika.goalreacher.dto.EventDTO;
+import pl.politechnika.goalreacher.entity.AppUser;
 import pl.politechnika.goalreacher.entity.Event;
 import pl.politechnika.goalreacher.service.EventService;
+import pl.politechnika.goalreacher.service.UserService;
 
 import java.util.List;
 
@@ -16,10 +19,12 @@ import java.util.List;
 public class EventController {
 
     private final EventService eventService;
+    private final UserService userService;
 
-    @Autowired
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, UserService userService)
+    {
         this.eventService = eventService;
+        this.userService = userService;
     }
 
     @PostMapping
@@ -41,9 +46,10 @@ public class EventController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Event> deleteEvent(@RequestParam long eventId)
+    public ResponseEntity<Event> deleteEvent(@RequestParam long eventId, Authentication authentication)
     {
-        if(eventService.deleteEvent(eventId))
+        AppUser user = userService.findByEmail(authentication.getPrincipal().toString());
+        if(eventService.deleteEvent(eventId, user))
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
     }

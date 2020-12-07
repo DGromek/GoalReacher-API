@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.politechnika.goalreacher.dto.EventDTO;
 import pl.politechnika.goalreacher.entity.AppGroup;
+import pl.politechnika.goalreacher.entity.AppUser;
 import pl.politechnika.goalreacher.entity.Event;
+import pl.politechnika.goalreacher.entity.UserGroup;
+import pl.politechnika.goalreacher.model.Role;
 import pl.politechnika.goalreacher.repository.EventRepository;
 import pl.politechnika.goalreacher.repository.GroupRepository;
+import pl.politechnika.goalreacher.repository.UserGroupRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -17,13 +21,14 @@ public class EventService
 
     private final EventRepository eventRepository;
     private final GroupRepository groupRepository;
+    private final UserGroupRepository userGroupRepository;
     private final SimpleDateFormat formatter;
 
-    @Autowired
-    public EventService(EventRepository eventRepository, GroupRepository groupRepository)
+    public EventService(EventRepository eventRepository, GroupRepository groupRepository, UserGroupRepository userGroupRepository)
     {
         this.eventRepository = eventRepository;
         this.groupRepository = groupRepository;
+        this.userGroupRepository = userGroupRepository;
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     }
 
@@ -68,10 +73,15 @@ public class EventService
         return eventRepository.save(toChange.get());
     }
 
-    public boolean deleteEvent(Long eventId)
+    public boolean deleteEvent(Long eventId, AppUser user)
     {
         Optional<Event> event = eventRepository.findById(eventId);
         if (!event.isPresent())
+        {
+            return false;
+        }
+        UserGroup userGroup = userGroupRepository.findByUserAndGroup(user, event.get().getGroup());
+        if(userGroup == null || userGroup.getRole() == Role.PENDING || userGroup.getRole() == Role.USER)
             return false;
         eventRepository.delete(event.get());
         return true;
