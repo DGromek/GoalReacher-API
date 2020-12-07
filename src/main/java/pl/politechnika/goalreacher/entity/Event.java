@@ -1,18 +1,20 @@
 package pl.politechnika.goalreacher.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.politechnika.goalreacher.Serializers.CustomEventGroupSerializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Event
+public class Event implements Comparable<Event>
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +22,7 @@ public class Event
 
     @ManyToOne
     @JoinColumn(name = "group_id")
+    @JsonSerialize(using = CustomEventGroupSerializer.class)
     private AppGroup group;
 
     @NotEmpty
@@ -27,5 +30,11 @@ public class Event
 
     private String description;
 
-    private LocalDateTime datetime;
+    private Date datetime;
+
+    @Override
+    public int compareTo(Event o)
+    {
+        return this.getDatetime().compareTo(o.getDatetime());
+    }
 }
