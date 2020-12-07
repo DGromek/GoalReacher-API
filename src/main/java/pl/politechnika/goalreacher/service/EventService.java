@@ -24,6 +24,7 @@ public class EventService
     private final UserGroupRepository userGroupRepository;
     private final SimpleDateFormat formatter;
 
+    @Autowired
     public EventService(EventRepository eventRepository, GroupRepository groupRepository, UserGroupRepository userGroupRepository)
     {
         this.eventRepository = eventRepository;
@@ -81,7 +82,7 @@ public class EventService
             return false;
         }
         UserGroup userGroup = userGroupRepository.findByUserAndGroup(user, event.get().getGroup());
-        if(userGroup == null || userGroup.getRole() == Role.PENDING || userGroup.getRole() == Role.USER)
+        if (userGroup == null || userGroup.getRole() == Role.PENDING || userGroup.getRole() == Role.USER)
             return false;
         eventRepository.delete(event.get());
         return true;
