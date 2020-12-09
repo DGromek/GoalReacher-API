@@ -13,46 +13,42 @@ import pl.politechnika.goalreacher.service.UserService;
 
 @Controller
 @RequestMapping("/groups")
-public class GroupController
-{
+public class GroupController {
     private final GroupService groupService;
     private final UserService userService;
 
-    public GroupController(GroupService groupService, UserService userService)
-    {
+    public GroupController(GroupService groupService, UserService userService) {
         this.groupService = groupService;
         this.userService = userService;
     }
 
     @GetMapping("/{guid}")
-    public ResponseEntity<AppGroup> getGroupByGuid(@PathVariable String guid)
-    {
+    public ResponseEntity<AppGroup> getGroupByGuid(@PathVariable String guid) {
         AppGroup ret = groupService.findByGuid(guid);
-        if (ret == null)
-            return ResponseEntity.notFound().build();
-
+        if (ret == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(ret, HttpStatus.OK);
     }
 
     @GetMapping("/all") // DEV
-    public ResponseEntity<Iterable<AppGroup>> getAll()
-    {
+    public ResponseEntity<Iterable<AppGroup>> getAll() {
         return new ResponseEntity<>(groupService.findAllGroups(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<AppGroup> newGroup(@RequestBody AppGroup newGroup, Authentication authentication)
-    {
-        return new ResponseEntity<>(groupService.saveGroup(newGroup, authentication), HttpStatus.CREATED);
+    public ResponseEntity<AppGroup> newGroup(@RequestBody AppGroup newGroup, Authentication authentication) {
+        return new ResponseEntity<>(groupService.saveGroup(newGroup, authentication.getPrincipal().toString()), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{guid}")
-    public ResponseEntity<Object> deleteGroup(@PathVariable String guid, Authentication authentication)
-    {
+    public ResponseEntity<Object> deleteGroup(@PathVariable String guid, Authentication authentication) {
         AppUser user = userService.findByEmail(authentication.getPrincipal().toString());
-        UserGroup deleted = groupService.deleteGroup(guid, user);
-        if (user == null || deleted != null) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        boolean deleted = groupService.deleteGroup(guid, user);
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

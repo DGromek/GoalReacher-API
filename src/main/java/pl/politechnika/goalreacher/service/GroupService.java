@@ -22,7 +22,7 @@ public class GroupService
 
     private static final String alphanumeric = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private final SecureRandom random = new SecureRandom();
-    private static final int guidLength = 6;
+    private final int GUID_LENGTH = 6;
 
     @Autowired
     public GroupService(GroupRepository groupRepository, UserGroupRepository userGroupRepository, UserRepository userRepository)
@@ -38,7 +38,7 @@ public class GroupService
         do
         {
             ret = new StringBuilder();
-            for (int i = 0; i < guidLength; i++)
+            for (int i = 0; i < GUID_LENGTH; i++)
                 ret.append(alphanumeric.charAt(random.nextInt(alphanumeric.length())));
         } while (groupRepository.findByGuid(ret.toString()) != null);
         return ret.toString();
@@ -54,11 +54,11 @@ public class GroupService
         return groupRepository.findAll();
     }
 
-    public AppGroup saveGroup(AppGroup newGroup, Authentication authentication)
+    public AppGroup saveGroup(AppGroup newGroup, String creatorEmail)
     {
         newGroup.setGuid(generateGuid());
 
-        AppUser user = userRepository.findByEmail(authentication.getPrincipal().toString());
+        AppUser user = userRepository.findByEmail(creatorEmail);
         AppGroup group = groupRepository.save(newGroup);
 
         UserGroup newUserGroup = new UserGroup();
@@ -68,16 +68,18 @@ public class GroupService
         newUserGroup.setRole(Role.CREATOR);
         userGroupRepository.save(newUserGroup);
 
-        return groupRepository.findByGuid(group.getGuid());
+        return group;
     }
 
-    public UserGroup deleteGroup(String guid, AppUser user)
+    public boolean deleteGroup(String guid, AppUser user)
     {
         AppGroup toDel = groupRepository.findByGuid(guid);
         UserGroup userGroup = userGroupRepository.findByUserAndGroup(user, toDel);
-        if (userGroup.getRole() != Role.CREATOR) return userGroup;
+        if (userGroup.getRole() != Role.CREATOR) {
+            return false;
+        }
 
         groupRepository.delete(toDel);
-        return null;
+        return true;
     }
 }
