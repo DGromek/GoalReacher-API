@@ -15,19 +15,16 @@ import pl.politechnika.goalreacher.service.UserGroupService;
 
 @Controller
 @RequestMapping()
-public class UserGroupController
-{
+public class UserGroupController {
     private final UserGroupService userGroupRepository;
 
     @Autowired
-    public UserGroupController(UserGroupService userGroupRepository)
-    {
+    public UserGroupController(UserGroupService userGroupRepository) {
         this.userGroupRepository = userGroupRepository;
     }
 
     @PostMapping("/joinGroup")
-    public ResponseEntity<AppUser> joinGroup(@RequestBody JoinGroupDTO joinGroupDTO)
-    {
+    public ResponseEntity<AppUser> joinGroup(@RequestBody JoinGroupDTO joinGroupDTO) {
         UserGroup joined = userGroupRepository.joinGroup(joinGroupDTO);
 
         if (joined == null)
@@ -37,43 +34,31 @@ public class UserGroupController
     }
 
     @PutMapping("/users/changeStatus")
-    public ResponseEntity<UserGroup> changeUserStatus(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication authentication)
-    {
-        try
-        {
-            UserGroup toChange = userGroupRepository.changeStatus(changeStatusDTO, authentication);
-            return new ResponseEntity<>(toChange, HttpStatus.OK);
-        } catch (Exception e)
-        {
+    public ResponseEntity<UserGroup> changeUserStatus(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication authentication) {
+        UserGroup toChange = userGroupRepository.changeStatus(changeStatusDTO, authentication.getPrincipal().toString());
+        if (toChange == null) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
+        return new ResponseEntity<>(toChange, HttpStatus.OK);
     }
 
     @DeleteMapping("users/leaveGroup")
-    public ResponseEntity<AppUser> leaveGroup(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication authentication)
-    {
-        try
-        {
+    public ResponseEntity<AppUser> leaveGroup(@RequestBody ChangeStatusDTO changeStatusDTO, Authentication authentication) {
+        try {
             userGroupRepository.leaveGroup(changeStatusDTO, authentication);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
     @PostMapping("/joinFromInvitation")
-    public ResponseEntity<UserGroup> joinFromInvitation(@RequestParam long invitationId, Authentication authentication)
-    {
-        try
-        {
+    public ResponseEntity<UserGroup> joinFromInvitation(@RequestParam long invitationId, Authentication authentication) {
+        try {
             return new ResponseEntity<>(userGroupRepository.joinFromInvitation(invitationId, authentication), HttpStatus.OK);
-        } catch (NotAuthorizedException e)
-        {
+        } catch (NotAuthorizedException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
