@@ -30,21 +30,21 @@ public class InvitationService
         this.userGroupRepository = userGroupRepository;
     }
 
-    public Invitation createInvitation(InvitationDTO invitationDTO, Authentication authentication) throws Exception
+    public Invitation createInvitation(InvitationDTO invitationDTO, Authentication authentication) throws NotAuthorizedException
     {
         AppUser inviting = userRepository.findByEmail(authentication.getPrincipal().toString());
-        if(inviting == null) throw new NotAuthorizedException();
         AppUser invited = userRepository.findByEmail(invitationDTO.getInvitedEmail());
-        if(invited == null) throw new UserNotExistingException();
         AppGroup group = groupRepository.findByGuid(invitationDTO.getGuid());
-        if(group == null) throw new GroupNotExistingException();
-
         UserGroup invitingGroup = userGroupRepository.findByUserAndGroup(inviting, group);
-        if(invitingGroup == null) throw new UserNotInGroupException();
-        if(invitingGroup.getRole() == Role.PENDING || invitingGroup.getRole() == Role.USER) throw new NotAuthorizedException();
-
         UserGroup isAlreadyInGroup = userGroupRepository.findByUserAndGroup(invited, group);
-        if(isAlreadyInGroup != null) throw new UserAlreadyInGroupException();
+
+        if (inviting == null || invited == null || group == null || invitingGroup == null || isAlreadyInGroup == null) {
+            return null;
+        }
+
+        if(invitingGroup.getRole() == Role.PENDING || invitingGroup.getRole() == Role.USER) {
+            throw new NotAuthorizedException();
+        }
 
         Invitation invitation = new Invitation();
         invitation.setGroup(group);

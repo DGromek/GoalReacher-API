@@ -13,30 +13,25 @@ import pl.politechnika.goalreacher.entity.Invitation;
 import pl.politechnika.goalreacher.service.InvitationService;
 
 @Controller
-public class InvitationController
-{
+public class InvitationController {
     private final InvitationService invitationService;
 
     @Autowired
-    public InvitationController(InvitationService invitationService)
-    {
+    public InvitationController(InvitationService invitationService) {
         this.invitationService = invitationService;
     }
 
     @PostMapping("/invitations")
-    public ResponseEntity<Invitation> inviteUser(@RequestBody InvitationDTO invitationDTO, Authentication authentication)
-    {
-        try
-        {
-            return new ResponseEntity<>(invitationService.createInvitation(invitationDTO, authentication), HttpStatus.OK);
-        }
-        catch (NotAuthorizedException e)
-        {
+    public ResponseEntity<Invitation> inviteUser(@RequestBody InvitationDTO invitationDTO, Authentication authentication) {
+        try {
+            Invitation invitation = invitationService.createInvitation(invitationDTO, authentication);
+            if (invitation == null) {
+                return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+            return new ResponseEntity<>(invitation, HttpStatus.OK);
+        } catch (NotAuthorizedException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        catch (Exception e)
-        {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+
     }
 }
