@@ -33,8 +33,9 @@ public class EventController
     public ResponseEntity<Event> createEvent(@RequestBody EventDTO newEventDTO)
     {
         Event saved = eventService.createEvent(newEventDTO);
-        if (saved == null)
+        if (saved == null) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
@@ -42,8 +43,9 @@ public class EventController
     public ResponseEntity<Event> updateEvent(@RequestBody EventDTO newEventDTO)
     {
         Event changed = eventService.updateEvent(newEventDTO);
-        if (changed == null)
+        if (changed == null) {
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         return new ResponseEntity<>(changed, HttpStatus.OK);
     }
 
@@ -51,8 +53,9 @@ public class EventController
     public ResponseEntity<Event> deleteEvent(@RequestParam long eventId, Authentication authentication)
     {
         AppUser user = userService.findByEmail(authentication.getPrincipal().toString());
-        if (eventService.deleteEvent(eventId, user))
+        if (eventService.deleteEvent(eventId, user)) {
             return new ResponseEntity<>(HttpStatus.OK);
+        }
         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
     }
 

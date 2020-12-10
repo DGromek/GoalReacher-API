@@ -55,12 +55,13 @@ public class UserGroupController {
     @PostMapping("/joinFromInvitation")
     public ResponseEntity<UserGroup> joinFromInvitation(@RequestParam long invitationId, Authentication authentication) {
         try {
-            return new ResponseEntity<>(userGroupRepository.joinFromInvitation(invitationId, authentication), HttpStatus.OK);
+            UserGroup userGroup = userGroupRepository.joinFromInvitation(invitationId, authentication);
+            if (userGroup == null) {
+                return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+            }
+            return new ResponseEntity<>(userGroup, HttpStatus.OK);
         } catch (NotAuthorizedException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
-
     }
 }

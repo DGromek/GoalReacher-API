@@ -109,21 +109,29 @@ public class UserGroupService {
         throw new NotAuthorizedException();
     }
 
-    public UserGroup joinFromInvitation(long invitationId, Authentication authentication) throws Exception {
+    public UserGroup joinFromInvitation(long invitationId, Authentication authentication) throws NotAuthorizedException {
         Optional<Invitation> invitation = invitationRepository.findById(invitationId);
-        if (!invitation.isPresent()) throw new InvitationNotExistingException();
+
+        if (!invitation.isPresent()) {
+            return null;
+        }
 
         Optional<AppGroup> group = groupRepository.findById(invitation.get().getGroup().getId());
-        if (!group.isPresent()) throw new GroupNotExistingException();
         Optional<AppUser> invited = userRepository.findById(invitation.get().getInvited().getId());
-        if (!invited.isPresent()) throw new UserNotExistingException();
+
+        if (!group.isPresent() || !invited.isPresent()) {
+            return null;
+        }
+
         AppUser authenticated = userRepository.findByEmail(authentication.getPrincipal().toString());
-        if (authenticated != invited.get()) throw new NotAuthorizedException();
+        if (authenticated != invited.get()) {
+            throw new NotAuthorizedException();
+        }
 
         UserGroup userGroup = userGroupRepository.findByUserAndGroup(invited.get(), group.get());
         if (userGroup != null) {
             if (userGroup.getRole() != Role.PENDING) {
-                throw new UserAlreadyInGroupException();
+                return null;
             } else {
                 userGroup.setRole(Role.USER);
                 return userGroupRepository.save(userGroup);
