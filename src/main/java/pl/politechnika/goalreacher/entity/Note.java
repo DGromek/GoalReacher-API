@@ -19,16 +19,17 @@ public class Note
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    private String title;
+
+    @NotEmpty
+    private String content;
+
     @ManyToOne
     @JoinColumn(name = "group_id")
     private AppGroup group;
 
-    @NotEmpty
-    private String name;
-
-    @NotEmpty
-    private String details;
-
-    @NotEmpty
-    private LocalDateTime expires;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private AppUser author;
 }

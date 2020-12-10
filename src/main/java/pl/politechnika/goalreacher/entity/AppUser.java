@@ -38,6 +38,10 @@ public class AppUser
     @Column(unique = true)
     private String email;
 
+    @OneToMany(mappedBy = "author")
+    @JsonIgnore
+    List<Note> notes = new ArrayList<>();
+
     @OneToMany(mappedBy = "user")
     @JsonSerialize(using = CustomUserSerializer.class)
     List<UserGroup> groups = new ArrayList<>();
