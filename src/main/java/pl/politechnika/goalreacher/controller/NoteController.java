@@ -7,7 +7,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.politechnika.goalreacher.dto.NoteDTO;
 import pl.politechnika.goalreacher.entity.AppGroup;
 import pl.politechnika.goalreacher.entity.AppUser;
 import pl.politechnika.goalreacher.entity.Note;
@@ -45,5 +47,10 @@ public class NoteController {
         }
 
         return new ResponseEntity<>(noteService.getAllByGroup(appGroup), HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<Note> save(NoteDTO noteDTO, Authentication authentication) {
+
     }
 }
