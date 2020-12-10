@@ -1,5 +1,6 @@
 package pl.politechnika.goalreacher.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.politechnika.goalreacher.Exceptions.*;
@@ -14,6 +15,8 @@ import pl.politechnika.goalreacher.repository.InvitationRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
 import pl.politechnika.goalreacher.repository.UserRepository;
 
+import java.util.Optional;
+
 @Service
 public class InvitationService
 {
@@ -22,6 +25,7 @@ public class InvitationService
     private final GroupRepository groupRepository;
     private final UserGroupRepository userGroupRepository;
 
+    @Autowired
     public InvitationService(InvitationRepository invitationRepository, UserRepository userRepository, GroupRepository groupRepository, UserGroupRepository userGroupRepository)
     {
         this.invitationRepository = invitationRepository;
@@ -33,18 +37,19 @@ public class InvitationService
     public Invitation createInvitation(InvitationDTO invitationDTO, Authentication authentication) throws Exception
     {
         AppUser inviting = userRepository.findByEmail(authentication.getPrincipal().toString());
-        if(inviting == null) throw new NotAuthorizedException();
+        if (inviting == null) throw new NotAuthorizedException();
         AppUser invited = userRepository.findByEmail(invitationDTO.getInvitedEmail());
-        if(invited == null) throw new UserNotExistingException();
+        if (invited == null) throw new UserNotExistingException();
         AppGroup group = groupRepository.findByGuid(invitationDTO.getGuid());
-        if(group == null) throw new GroupNotExistingException();
+        if (group == null) throw new GroupNotExistingException();
 
         UserGroup invitingGroup = userGroupRepository.findByUserAndGroup(inviting, group);
-        if(invitingGroup == null) throw new UserNotInGroupException();
-        if(invitingGroup.getRole() == Role.PENDING || invitingGroup.getRole() == Role.USER) throw new NotAuthorizedException();
+        if (invitingGroup == null) throw new UserNotInGroupException();
+        if (invitingGroup.getRole() == Role.PENDING || invitingGroup.getRole() == Role.USER)
+            throw new NotAuthorizedException();
 
         UserGroup isAlreadyInGroup = userGroupRepository.findByUserAndGroup(invited, group);
-        if(isAlreadyInGroup != null) throw new UserAlreadyInGroupException();
+        if (isAlreadyInGroup != null) throw new UserAlreadyInGroupException();
 
         Invitation invitation = new Invitation();
         invitation.setGroup(group);
@@ -52,5 +57,29 @@ public class InvitationService
         invitation.setInviting(inviting);
 
         return invitationRepository.save(invitation);
+    }
+
+    public boolean deleteInvitation(AppUser user, long invitationId)
+    {
+        Optional<Invitation> invitation = invitationRepository.findById(invitationId);
+        if (!invitation.isPresent())
+        {
+            return false;
+        }
+
+        if (invitation.get().getInvited() == user)
+        {
+            invitationRepository.delete(invitation.get());
+            return true;
+        }
+
+        UserGroup userGroup = userGroupRepository.findByUserAndGroup(user, invitation.get().getGroup());
+        if (userGroup == null || (userGroup.getRole() != Role.ADMIN && userGroup.getRole() != Role.CREATOR))
+        {
+            return false;
+        }
+
+        invitationRepository.delete(invitation.get());
+        return true;
     }
 }

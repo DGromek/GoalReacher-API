@@ -158,6 +158,14 @@ Authorization Bearer Token
 <td>Nowo utworzone zaproszenie, 403 jeżeli token jest nieważny lub dany użytkownik nie ma uprawnień do zapraszania lub 422 gdy inne dane są błędne</td>
 </tr>
 <tr>
+<td>DELETE</td>
+<td>/invitations/{invitationId}</td>
+<td>Authorization Bearer Token, Body:<code>
+id: Long 
+</code></td>
+<td>Nowo utworzone zaproszenie, 403 jeżeli token jest nieważny lub dany użytkownik nie ma uprawnień do zapraszania lub 422 gdy inne dane są błędne</td>
+</tr>
+<tr>
 <td>POST</td>
 <td>/joinFromInvitation</td>
 <td>Authorization Bearer Token, param: invitationId long
