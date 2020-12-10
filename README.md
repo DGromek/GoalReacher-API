@@ -206,12 +206,12 @@ param: eventId long
 
 <tr>
 <td>GET</td>
-<td>/events/{groupId}/{month}/{year}</td>
+<td>/events/{groupId}/{from}/{to}</td>
 <td>
 <code>
 groupId: long,
-month: int <0-11>,
-year: int
+from: String "dd-MM-YYYY",
+to: String "dd-MM-YYYY"
 </code>
 </td>
 <td>posortowana lista eventow z danego miesiaca i roku</td>
