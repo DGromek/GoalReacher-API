@@ -56,10 +56,10 @@ public class EventController
         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    @GetMapping("/{groupId}/{month}/{year}")
-    public ResponseEntity<List<Event>> getFromMonth(@PathVariable Long groupId, @PathVariable int month, @PathVariable int year)
+    @GetMapping("/{groupId}/{from}/{to}")
+    public ResponseEntity<List<Event>> getFromMonth(@PathVariable Long groupId, @PathVariable String from, @PathVariable String to)
     {
-        return new ResponseEntity<>(eventService.getAllByGroupIdAndMonthAndYear(groupId, month, year), HttpStatus.OK);
+        return new ResponseEntity<>(eventService.getAllByGroupFromToDate(groupId, from, to), HttpStatus.OK);
     }
 
     @GetMapping("/{groupId}")
