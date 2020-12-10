@@ -158,6 +158,14 @@ Authorization Bearer Token
 <td>Nowo utworzone zaproszenie, 403 jeżeli token jest nieważny lub dany użytkownik nie ma uprawnień do zapraszania lub 422 gdy inne dane są błędne</td>
 </tr>
 <tr>
+<td>DELETE</td>
+<td>/invitations/{invitationId}</td>
+<td>Authorization Bearer Token, Body:<code>
+id: Long 
+</code></td>
+<td>Nowo utworzone zaproszenie, 403 jeżeli token jest nieważny lub dany użytkownik nie ma uprawnień do zapraszania lub 422 gdy inne dane są błędne</td>
+</tr>
+<tr>
 <td>POST</td>
 <td>/joinFromInvitation</td>
 <td>Authorization Bearer Token, param: invitationId long
@@ -206,12 +214,12 @@ param: eventId long
 
 <tr>
 <td>GET</td>
-<td>/events/{groupId}/{month}/{year}</td>
+<td>/events/{groupId}/{from}/{to}</td>
 <td>
 <code>
 groupId: long,
-month: int <0-11>,
-year: int
+from: String "dd-MM-YYYY",
+to: String "dd-MM-YYYY"
 </code>
 </td>
 <td>posortowana lista eventow z danego miesiaca i roku</td>

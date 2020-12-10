@@ -1,5 +1,7 @@
 package pl.politechnika.goalreacher.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import pl.politechnika.goalreacher.Exceptions.*;
@@ -14,6 +16,8 @@ import pl.politechnika.goalreacher.repository.InvitationRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
 import pl.politechnika.goalreacher.repository.UserRepository;
 
+import java.util.Optional;
+
 @Service
 public class InvitationService
 {
@@ -22,6 +26,7 @@ public class InvitationService
     private final GroupRepository groupRepository;
     private final UserGroupRepository userGroupRepository;
 
+    @Autowired
     public InvitationService(InvitationRepository invitationRepository, UserRepository userRepository, GroupRepository groupRepository, UserGroupRepository userGroupRepository)
     {
         this.invitationRepository = invitationRepository;
@@ -30,7 +35,7 @@ public class InvitationService
         this.userGroupRepository = userGroupRepository;
     }
 
-    public Invitation createInvitation(InvitationDTO invitationDTO, Authentication authentication) throws NotAuthorizedException
+    public Invitation createInvitation(InvitationDTO invitationDTO, Authentication authentication) throws Exception
     {
         AppUser inviting = userRepository.findByEmail(authentication.getPrincipal().toString());
         AppUser invited = userRepository.findByEmail(invitationDTO.getInvitedEmail());
@@ -52,5 +57,29 @@ public class InvitationService
         invitation.setInviting(inviting);
 
         return invitationRepository.save(invitation);
+    }
+
+    public boolean deleteInvitation(AppUser user, long invitationId)
+    {
+        Optional<Invitation> invitation = invitationRepository.findById(invitationId);
+        if (!invitation.isPresent())
+        {
+            return false;
+        }
+
+        if (invitation.get().getInvited() == user)
+        {
+            invitationRepository.delete(invitation.get());
+            return true;
+        }
+
+        UserGroup userGroup = userGroupRepository.findByUserAndGroup(user, invitation.get().getGroup());
+        if (userGroup == null || (userGroup.getRole() != Role.ADMIN && userGroup.getRole() != Role.CREATOR))
+        {
+            return false;
+        }
+
+        invitationRepository.delete(invitation.get());
+        return true;
     }
 }

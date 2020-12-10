@@ -38,15 +38,27 @@ public class EventService
         return eventRepository.getAllByGroupId(groupId);
     }
 
-    public List<Event> getAllByGroupIdAndMonthAndYear(Long groupId, int month, int year)
+    public List<Event> getAllByGroupFromToDate(Long groupId, String fromRaw, String toRaw)
     {
+        SimpleDateFormat ddMMyyyy = new SimpleDateFormat("dd-MM-yyyy");
         Calendar cal = Calendar.getInstance();
+        Calendar from = Calendar.getInstance();
+        Calendar to = Calendar.getInstance();
+        try
+        {
+            from.setTime(ddMMyyyy.parse(fromRaw));
+            to.setTime(ddMMyyyy.parse(toRaw));
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
         List<Event> all = eventRepository.getAllByGroupId(groupId);
         List<Event> matching = new ArrayList<>();
         for (Event event : all)
         {
             cal.setTime(event.getDatetime());
-            if (cal.get(Calendar.MONTH) == month && cal.get(Calendar.YEAR) == year)
+            if (cal.before(to) && cal.after(from))
                 matching.add(event);
         }
         Collections.sort(matching);
