@@ -43,7 +43,7 @@ public class InvitationService
         UserGroup invitingGroup = userGroupRepository.findByUserAndGroup(inviting, group);
         UserGroup isAlreadyInGroup = userGroupRepository.findByUserAndGroup(invited, group);
 
-        if (inviting == null || invited == null || group == null || invitingGroup == null || isAlreadyInGroup == null) {
+        if (inviting == null || invited == null || group == null || invitingGroup == null || isAlreadyInGroup != null) {
             return null;
         }
 
