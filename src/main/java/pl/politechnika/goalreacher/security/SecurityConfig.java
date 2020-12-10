@@ -25,7 +25,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/googleLogin").permitAll()
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .anyRequest().authenticated()
-                .anyRequest().permitAll()
                 .and()
                 .cors()
                 .and()
