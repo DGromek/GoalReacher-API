@@ -147,4 +147,8 @@ public class UserGroupService {
         invitationRepository.delete(invitation.get());
         return userGroupRepository.save(newUserGroup);
     }
+
+    public UserGroup findByUserAndGroup(AppUser appUser, AppGroup appGroup) {
+        return userGroupRepository.findByUserAndGroup(appUser, appGroup);
+    }
 }
