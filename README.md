@@ -224,8 +224,58 @@ to: String "dd-MM-YYYY"
 </td>
 <td>posortowana lista eventow z danego miesiaca i roku</td>
 </tr>
+<tr>
+<td>POST</td>
+<td>/notes</td>
+<td>
+<code> JSON
+{
+    "title": String,
+    "content": String,
+    "guid": String
+}
+</code>
+</td>
+<td>Nowo utworzony event, FORBIDDEN lub UNPROCESSABLE ENTITY</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/notes/{guid}</td>
+<td>
+<code> 
+guid: String
+</code>
+</td>
+<td>Lista eventow dla danej grupy</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/notes/{id}</td>
+<td>
+<code>
+id: String, 
+Body: JSON
+{
+    "title": String,
+    "content": String,
+}
+</code>
+</td>
+<td>Zaktualizowany event lub UNPROCESSABLE ENTITY</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/notes/{id}</td>
+<td>
+<code> 
+id: long
+</code>
+</td>
+<td>OK lub UNPROCESSABLE ENTITY</td>
+</tr>
 
 </table>
 
 <h3>Dodatkowe informacje</h3>
-Od momentu zalogowania każdy request podbijający do API w zwrotce będzie otrzymywał header <zaraz uzupełnie> z nowym tokenem. Każdy token jest ważny 15 minut. 
+Od momentu zalogowania każdy request podbijający do API w zwrotce będzie otrzymywał header <Refreshed-token> z nowym tokenem. Każdy token jest ważny 15 minut. <br/>
+Wszystkie Requesty z wyjątkiem logowania i rejestracji muszą mieć token

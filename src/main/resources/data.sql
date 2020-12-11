@@ -36,7 +36,7 @@ INSERT INTO user_group(google_calendar, role, group_id, user_id) VALUES
 (false, 1, 2, 1),
 (false, 2, 3, 2),
 (false, 1, 4, 2),
-(false, 3, 5, 3),
+(false, 2, 5, 3),
 (false, 1, 6, 4),
 (false, 2, 1, 5),
 (false, 1, 2, 5),
@@ -63,3 +63,7 @@ INSERT INTO event(datetime, description, name, group_id) values
 ('2020-12-3 11:00:00', 'Event na 3 grudnia', 'Event 3', 5),
 ('2020-12-5 18:00:00', 'Event na 5 grudnia', 'Event 5', 5),
 ('2020-12-6 09:00:00', 'Event na 6 grudnia', 'Event 6', 5);
+
+INSERT INTO note(title, content, author_id, group_id) VALUES
+('Notatka wazowskiego', 'Tresc notatki wazowskiego', 5, 5),
+('Notatka ebuli', 'Tresc notatki ebuli', 3, 5);
