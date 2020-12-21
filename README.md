@@ -113,6 +113,12 @@ Authorization Bearer Token
 <td>200 lub 403</td>
 </tr>
 <tr>
+<td>PUT</td>
+<td>/groups/block/{guid}</td>
+<td></td>
+<td>200 lub 403</td>
+</tr>
+<tr>
 <td>POST</td>
 <td>/joinGroup</td>
 <td><code>JSON
@@ -121,7 +127,7 @@ Authorization Bearer Token
     "userId": string
 }
 </code></td>
-<td>JSON z zaktualizowanym userem lub 422 jeżeli coś jest nie tak</td>
+<td>JSON z zaktualizowanym userem, 422 jeżeli coś jest nie tak lub 418 jeżeli grupa jest zablokowana</td>
 </tr>
 <tr>
 <td>PUT</td>
@@ -155,7 +161,7 @@ Authorization Bearer Token
     "invitedEmail": string
 }
 </code></td>
-<td>Nowo utworzone zaproszenie, 403 jeżeli token jest nieważny lub dany użytkownik nie ma uprawnień do zapraszania lub 422 gdy inne dane są błędne</td>
+<td>Nowo utworzone zaproszenie, 403 jeżeli token jest nieważny lub dany użytkownik nie ma uprawnień do zapraszania, 422 gdy inne dane są błędne lub 418 gdy grupa jest zablokowana</td>
 </tr>
 <tr>
 <td>DELETE</td>
