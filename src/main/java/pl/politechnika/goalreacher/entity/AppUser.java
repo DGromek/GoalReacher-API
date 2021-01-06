@@ -31,12 +31,13 @@ public class AppUser
     private String lastName;
 
     @NotBlank
-    @JsonIgnore
     private String password;
 
     @Email
     @Column(unique = true)
     private String email;
+
+    private String oneSignalPlayerId;
 
     @OneToMany(mappedBy = "author")
     @JsonIgnore

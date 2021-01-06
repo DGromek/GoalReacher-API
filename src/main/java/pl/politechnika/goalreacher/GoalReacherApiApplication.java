@@ -6,22 +6,27 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-public class GoalReacherApiApplication {
+public class GoalReacherApiApplication
+{
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         SpringApplication app = new SpringApplication(GoalReacherApiApplication.class);
 
         String profile = System.getenv("PROFILE");
-        if (profile == null) {
+        if (profile == null)
+        {
             app.setAdditionalProfiles("dev");
-        } else {
+        } else
+        {
             app.setAdditionalProfiles(profile);
         }
         app.run(args);
     }
 
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    public BCryptPasswordEncoder bCryptPasswordEncoder()
+    {
         return new BCryptPasswordEncoder(10);
     }
 }

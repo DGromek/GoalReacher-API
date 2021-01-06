@@ -14,5 +14,7 @@ public interface UserGroupRepository extends JpaRepository<UserGroup, Long>
 {
     UserGroup findByUser(AppUser user);
 
+    Iterable<UserGroup> findByGroup(AppGroup group);
+
     UserGroup findByUserAndGroup(AppUser appUser, AppGroup appGroup);
 }

@@ -15,7 +15,10 @@ import pl.politechnika.goalreacher.repository.GroupRepository;
 import pl.politechnika.goalreacher.repository.InvitationRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
 import pl.politechnika.goalreacher.repository.UserRepository;
+import pl.politechnika.goalreacher.utils.SendNotfications;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,25 +36,43 @@ public class UserGroupService {
         this.invitationRepository = invitationRepository;
     }
 
-    public UserGroup joinGroup(JoinGroupDTO joinGroupDTO) {
+    public UserGroup joinGroup(JoinGroupDTO joinGroupDTO, AppUser joiningUser) {
         AppGroup joiningGroup = groupRepository.findByGuid(joinGroupDTO.getTargetGroupGuid());
         if (joiningGroup == null) {
             return null;
         }
 
-        Optional<AppUser> joiningUser = userRepository.findById(joinGroupDTO.getUserId());
-        if (!joiningUser.isPresent())
+        if (joiningUser == null)
             return null;
 
         for (UserGroup userGroup : joiningGroup.getUsers()) {
-            if (userGroup.getUser().equals(joiningUser.get()))
+            if (userGroup.getUser().equals(joiningUser))
                 return null;
         }
         UserGroup newUserGroup = new UserGroup();
-        newUserGroup.setUser(joiningUser.get());
+        newUserGroup.setUser(joiningUser);
         newUserGroup.setGroup(joiningGroup);
         newUserGroup.setGoogleCalendar(false);
         newUserGroup.setRole(Role.PENDING);
+
+        List<String> recepients = new ArrayList<>();
+
+        for(UserGroup userGroup : userGroupRepository.findByGroup(joiningGroup))
+        {
+            if(userGroup.getRole() == Role.CREATOR || userGroup.getRole() == Role.ADMIN)
+            {
+                if(userGroup.getUser().getOneSignalPlayerId() != null)
+                    recepients.add(userGroup.getUser().getOneSignalPlayerId());
+            }
+        }
+
+        String message = joiningUser.getFirstName() + " " + joiningUser.getLastName()
+                + " is trying to join your " + joiningGroup.getName() + " group!";
+
+        String data = "{\"goto\": \"users\", \"group\": \"" + joiningGroup.getGuid() + "\"}";
+
+        if(!recepients.isEmpty())
+            SendNotfications.sendMessageToUsers(message, recepients, data);
 
         return userGroupRepository.save(newUserGroup);
     }

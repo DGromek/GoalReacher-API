@@ -84,6 +84,15 @@ Authorization Bearer Token
 <td>Json z zaktualizowanym użytkownikiem lub 422</td>
 </tr>
 <tr>
+<td>PUT</td>
+<td>/users/updatePlayerId</td>
+<td>
+Authorization Bearer Token,
+param: playerId String
+</td>
+<td>Json z zaktualizowanym użytkownikiem lub 422</td>
+</tr>
+<tr>
 <td>GET</td>
 <td>/groups/all</td>
 <td></td>

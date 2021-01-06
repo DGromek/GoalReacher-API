@@ -1,5 +1,6 @@
 package pl.politechnika.goalreacher.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import pl.politechnika.goalreacher.entity.AppUser;
 import pl.politechnika.goalreacher.entity.UserGroup;
 import pl.politechnika.goalreacher.service.GroupService;
 import pl.politechnika.goalreacher.service.UserGroupService;
+import pl.politechnika.goalreacher.service.UserService;
 
 @Controller
 @RequestMapping()
@@ -20,23 +22,28 @@ public class UserGroupController
 {
     private final UserGroupService userGroupRepository;
     private final GroupService groupService;
+    private final UserService userService;
 
-    public UserGroupController(UserGroupService userGroupRepository, GroupService groupService)
+    @Autowired
+    public UserGroupController(UserGroupService userGroupRepository, GroupService groupService, UserService userService)
     {
         this.userGroupRepository = userGroupRepository;
         this.groupService = groupService;
+        this.userService = userService;
     }
 
     @PostMapping("/joinGroup")
-    public ResponseEntity<AppUser> joinGroup(@RequestBody JoinGroupDTO joinGroupDTO)
+    public ResponseEntity<AppUser> joinGroup(@RequestBody JoinGroupDTO joinGroupDTO, Authentication authentication)
     {
+        AppUser user = userService.findByEmail(authentication.getPrincipal().toString());
+
         AppGroup group = groupService.findByGuid(joinGroupDTO.getTargetGroupGuid());
         if (group.isLocked())
         {
             return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         }
 
-        UserGroup joined = userGroupRepository.joinGroup(joinGroupDTO);
+        UserGroup joined = userGroupRepository.joinGroup(joinGroupDTO, user);
 
         if (joined == null)
             return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);

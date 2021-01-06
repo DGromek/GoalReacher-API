@@ -13,7 +13,10 @@ import pl.politechnika.goalreacher.repository.GroupRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventService
@@ -100,6 +103,16 @@ public class EventService
         {
             return null;
         }
+
+
+//        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
+//        cal.setTime(newEvent.getDatetime());
+
+//        String cron = String.format("* %d %d %d %d *", cal.get(Calendar.MINUTE), cal.get(Calendar.HOUR)-1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1);
+
+//        CronTrigger cronTrigger = new CronTrigger(cron);
+//
+//        taskScheduler.schedule(new SendNotificationsTask(newEvent), cronTrigger);
 
         return eventRepository.save(newEvent);
     }

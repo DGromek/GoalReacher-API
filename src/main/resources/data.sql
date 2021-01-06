@@ -22,7 +22,7 @@ INSERT INTO app_group(description, guid, name, is_locked) VALUES
 ('Grupa testowa B', 'BBBBBB', 'B Grupa', false),
 ('Grupa testowa C', 'CCCCCC', 'C Grupa', false),
 ('Grupa testowa D', 'DDDDDD', 'D Grupa', false),
-('Grupa testowa F', 'FFFFFF', 'F Grupa', true),
+('Grupa testowa F', 'FFFFFF', 'F Grupa', false),
 ('Grupa testowa G', 'GGGGGG', 'G Grupa', false);
 
 
@@ -42,7 +42,7 @@ INSERT INTO user_group(google_calendar, role, group_id, user_id) VALUES
 (false, 1, 2, 5),
 (false, 2, 3, 5),
 (false, 1, 4, 5),
-(false, 3, 6, 5),
+(false, 3, 6, 5);
 (false, 3, 5, 7),
 (false, 3, 5, 8),
 (false, 3, 5, 9),
