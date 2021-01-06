@@ -35,6 +35,12 @@ public class InvitationService
         this.userGroupRepository = userGroupRepository;
     }
 
+    public Invitation getFromId(long id)
+    {
+        Optional<Invitation> invitation = invitationRepository.findById(id);
+        return invitation.orElse(null);
+    }
+
     public Invitation createInvitation(InvitationDTO invitationDTO, Authentication authentication) throws NotAuthorizedException
     {
         AppUser inviting = userRepository.findByEmail(authentication.getPrincipal().toString());

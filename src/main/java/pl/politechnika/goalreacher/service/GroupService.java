@@ -54,12 +54,19 @@ public class GroupService
         return groupRepository.findAll();
     }
 
+    public AppGroup changeBlocked(AppGroup group)
+    {
+        group.setLocked(!group.isLocked());
+        return groupRepository.save(group);
+    }
+
     public AppGroup saveGroup(AppGroup newGroup, String creatorEmail)
     {
         newGroup.setGuid(generateGuid());
 
         AppUser user = userRepository.findByEmail(creatorEmail);
         AppGroup group = groupRepository.save(newGroup);
+        group.setLocked(false);
 
         UserGroup newUserGroup = new UserGroup();
         newUserGroup.setUser(user);

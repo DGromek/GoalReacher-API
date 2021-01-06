@@ -30,6 +30,8 @@ public class AppGroup
     @NotEmpty
     private String description;
 
+    private boolean isLocked;
+
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
     @JsonSerialize(using = CustomGroupSerializer.class)
     private List<UserGroup> users = new ArrayList<>();

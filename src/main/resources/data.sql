@@ -17,13 +17,13 @@ INSERT INTO app_user(email, first_name, last_name, password) VALUES
 ('pp@gmail.com', 'p', 'p', '$2a$10$UMHEGIuKed.l0tTbZDGExe0Q6lywnCC0VMgjbOBa9H2WuDKbpwPuq');
 
 
-INSERT INTO app_group(description, guid, name) VALUES
-('Grupa testowa A', 'AAAAAA', 'A Grupa'),
-('Grupa testowa B', 'BBBBBB', 'B Grupa'),
-('Grupa testowa C', 'CCCCCC', 'C Grupa'),
-('Grupa testowa D', 'DDDDDD', 'D Grupa'),
-('Grupa testowa F', 'FFFFFF', 'F Grupa'),
-('Grupa testowa G', 'GGGGGG', 'G Grupa');
+INSERT INTO app_group(description, guid, name, is_locked) VALUES
+('Grupa testowa A', 'AAAAAA', 'A Grupa', false),
+('Grupa testowa B', 'BBBBBB', 'B Grupa', false),
+('Grupa testowa C', 'CCCCCC', 'C Grupa', false),
+('Grupa testowa D', 'DDDDDD', 'D Grupa', false),
+('Grupa testowa F', 'FFFFFF', 'F Grupa', true),
+('Grupa testowa G', 'GGGGGG', 'G Grupa', false);
 
 
 INSERT INTO user_group(google_calendar, role, group_id, user_id) VALUES
