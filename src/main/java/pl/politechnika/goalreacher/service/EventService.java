@@ -38,29 +38,10 @@ public class EventService
         return eventRepository.getAllByGroupId(groupId);
     }
 
-    public List<Event> getAllByGroupFromToDate(Long groupId, String fromRaw, String toRaw)
+    public List<Event> getAllByGroupFromToDate(Long groupId, Date from, Date to)
     {
-        SimpleDateFormat ddMMyyyy = new SimpleDateFormat("dd-MM-yyyy");
-        Calendar cal = Calendar.getInstance();
-        Calendar from = Calendar.getInstance();
-        Calendar to = Calendar.getInstance();
-        try
-        {
-            from.setTime(ddMMyyyy.parse(fromRaw));
-            to.setTime(ddMMyyyy.parse(toRaw));
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-        List<Event> all = eventRepository.getAllByGroupId(groupId);
-        List<Event> matching = new ArrayList<>();
-        for (Event event : all)
-        {
-            cal.setTime(event.getDatetime());
-            if (cal.before(to) && cal.after(from))
-                matching.add(event);
-        }
+        List<Event> matching = eventRepository.getAllByDatetimeBetweenAndGroupId(from, to, groupId);
+
         Collections.sort(matching);
         return matching;
     }

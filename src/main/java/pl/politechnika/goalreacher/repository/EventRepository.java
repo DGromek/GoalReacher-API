@@ -12,5 +12,5 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> getAllByGroupId(Long groupId);
-    List<Event> getAllByDatetimeBetweenAndGroup(Date datetime, Date datetime2, AppGroup group);
+    List<Event> getAllByDatetimeBetweenAndGroupId(Date datetime, Date datetime2, Long group);
 }

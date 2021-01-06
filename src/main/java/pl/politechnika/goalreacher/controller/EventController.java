@@ -1,6 +1,7 @@
 package pl.politechnika.goalreacher.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import pl.politechnika.goalreacher.entity.Event;
 import pl.politechnika.goalreacher.service.EventService;
 import pl.politechnika.goalreacher.service.UserService;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -60,7 +62,10 @@ public class EventController
     }
 
     @GetMapping("/{groupId}/{from}/{to}")
-    public ResponseEntity<List<Event>> getFromMonth(@PathVariable Long groupId, @PathVariable String from, @PathVariable String to)
+    public ResponseEntity<List<Event>> getFromMonth(
+            @PathVariable Long groupId,
+            @PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") Date from,
+            @PathVariable @DateTimeFormat(pattern = "dd-MM-yyyy") Date to)
     {
         return new ResponseEntity<>(eventService.getAllByGroupFromToDate(groupId, from, to), HttpStatus.OK);
     }
