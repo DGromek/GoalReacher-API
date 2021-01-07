@@ -1,6 +1,7 @@
 package pl.politechnika.goalreacher.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import pl.politechnika.goalreacher.dto.EventDTO;
 import pl.politechnika.goalreacher.entity.AppGroup;
@@ -11,46 +12,47 @@ import pl.politechnika.goalreacher.model.Role;
 import pl.politechnika.goalreacher.repository.EventRepository;
 import pl.politechnika.goalreacher.repository.GroupRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
+import pl.politechnika.goalreacher.utils.NotificationSender;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EventService
-{
+public class EventService {
 
     private final EventRepository eventRepository;
     private final GroupRepository groupRepository;
     private final UserGroupRepository userGroupRepository;
     private final SimpleDateFormat formatter;
+    private final ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
     @Autowired
-    public EventService(EventRepository eventRepository, GroupRepository groupRepository, UserGroupRepository userGroupRepository)
-    {
+    public EventService(EventRepository eventRepository, GroupRepository groupRepository, UserGroupRepository userGroupRepository, ThreadPoolTaskScheduler threadPoolTaskScheduler) {
         this.eventRepository = eventRepository;
         this.groupRepository = groupRepository;
         this.userGroupRepository = userGroupRepository;
+        this.threadPoolTaskScheduler = threadPoolTaskScheduler;
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     }
 
-    public List<Event> getAllByGroupId(Long groupId)
-    {
+    public List<Event> getAllByGroupId(Long groupId) {
         return eventRepository.getAllByGroupId(groupId);
     }
 
-    public List<Event> getAllByGroupFromToDate(Long groupId, Date from, Date to)
-    {
+    public List<Event> getAllByGroupFromToDate(Long groupId, Date from, Date to) {
         List<Event> matching = eventRepository.getAllByDatetimeBetweenAndGroupId(from, to, groupId);
 
         Collections.sort(matching);
         return matching;
     }
 
-    public Event updateEvent(EventDTO newEventDTO)
-    {
+    public Event updateEvent(EventDTO newEventDTO) {
         Optional<Event> toChange = eventRepository.findById(newEventDTO.getId());
         if (!toChange.isPresent())
             return null;
@@ -60,21 +62,17 @@ public class EventService
         if (!newEventDTO.getName().isEmpty() && !newEventDTO.getName().equals(""))
             toChange.get().setName(newEventDTO.getName());
 
-        try
-        {
+        try {
             toChange.get().setDatetime(formatter.parse(newEventDTO.getDatetime()));
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return null;
         }
         return eventRepository.save(toChange.get());
     }
 
-    public boolean deleteEvent(Long eventId, AppUser user)
-    {
+    public boolean deleteEvent(Long eventId, AppUser user) {
         Optional<Event> event = eventRepository.findById(eventId);
-        if (!event.isPresent())
-        {
+        if (!event.isPresent()) {
             return false;
         }
         UserGroup userGroup = userGroupRepository.findByUserAndGroup(user, event.get().getGroup());
@@ -84,8 +82,7 @@ public class EventService
         return true;
     }
 
-    public Event createEvent(EventDTO newEventDTO)
-    {
+    public Event createEvent(EventDTO newEventDTO) {
         AppGroup group = groupRepository.findByGuid(newEventDTO.getGuid());
         if (group == null)
             return null;
@@ -96,24 +93,32 @@ public class EventService
         newEvent.setDescription(newEventDTO.getDescription());
         newEvent.setName(newEventDTO.getName());
 
-        try
-        {
+        try {
             newEvent.setDatetime(formatter.parse(newEventDTO.getDatetime()));
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             return null;
         }
 
+        newEvent.getDatetime();
 
-//        Calendar cal = Calendar.getInstance(TimeZone.getDefault());
-//        cal.setTime(newEvent.getDatetime());
+        Date notificationDate = addHoursToJavaUtilDate(newEvent.getDatetime(), -1);
+        Event savedEvent =  eventRepository.save(newEvent);
+        Runnable task = () -> {
+            System.out.println(LocalDateTime.now() + "- sent reminder about event with id " + savedEvent.getId() + " starting at " + savedEvent.getDatetime());
+            String message = "O godzinie " + savedEvent.getDatetime().getHours() + ":" + savedEvent.getDatetime().getMinutes() +
+                    " rozpocznie się wydarzenie " + savedEvent.getName() + " w grupie " + savedEvent.getGroup().getName();
+            List<String> userList = new ArrayList<>();
+            savedEvent.getGroup().getUsers().forEach( user -> userList.add(user.getUser().getOneSignalPlayerId()));
+            NotificationSender.sendMessageToUsers(message, userList, null);
+        };
+        threadPoolTaskScheduler.schedule(task, notificationDate);
+        return savedEvent;
+    }
 
-//        String cron = String.format("* %d %d %d %d *", cal.get(Calendar.MINUTE), cal.get(Calendar.HOUR)-1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.MONTH) + 1);
-
-//        CronTrigger cronTrigger = new CronTrigger(cron);
-//
-//        taskScheduler.schedule(new SendNotificationsTask(newEvent), cronTrigger);
-
-        return eventRepository.save(newEvent);
+    public Date addHoursToJavaUtilDate(Date date, int hours) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, hours);
+        return calendar.getTime();
     }
 }

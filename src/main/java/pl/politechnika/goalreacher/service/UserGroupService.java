@@ -15,7 +15,7 @@ import pl.politechnika.goalreacher.repository.GroupRepository;
 import pl.politechnika.goalreacher.repository.InvitationRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
 import pl.politechnika.goalreacher.repository.UserRepository;
-import pl.politechnika.goalreacher.utils.SendNotfications;
+import pl.politechnika.goalreacher.utils.NotificationSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +72,7 @@ public class UserGroupService {
         String data = "{\"goto\": \"users\", \"group\": \"" + joiningGroup.getGuid() + "\"}";
 
         if(!recepients.isEmpty())
-            SendNotfications.sendMessageToUsers(message, recepients, data);
+            NotificationSender.sendMessageToUsers(message, recepients, data);
 
         return userGroupRepository.save(newUserGroup);
     }

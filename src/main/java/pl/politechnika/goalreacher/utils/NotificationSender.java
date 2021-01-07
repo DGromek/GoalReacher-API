@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Scanner;
 
-public class SendNotfications
+public class NotificationSender
 {
     public static final String REST_API_KEY = "MGNjNjEzY2EtY2MxMy00NzQzLWIwYWYtZmRjYmZmOWUzOTk4";
     public static final String APP_ID = "6880a7bd-381a-4018-a17a-3dc8c91d3c5b";
