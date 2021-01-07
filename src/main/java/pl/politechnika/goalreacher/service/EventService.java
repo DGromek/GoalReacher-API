@@ -12,6 +12,7 @@ import pl.politechnika.goalreacher.model.Role;
 import pl.politechnika.goalreacher.repository.EventRepository;
 import pl.politechnika.goalreacher.repository.GroupRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
+import pl.politechnika.goalreacher.repository.UserRepository;
 import pl.politechnika.goalreacher.utils.NotificationSender;
 
 import java.text.SimpleDateFormat;
@@ -29,14 +30,16 @@ public class EventService {
     private final EventRepository eventRepository;
     private final GroupRepository groupRepository;
     private final UserGroupRepository userGroupRepository;
+    private final UserRepository userRepository;
     private final SimpleDateFormat formatter;
     private final ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
     @Autowired
-    public EventService(EventRepository eventRepository, GroupRepository groupRepository, UserGroupRepository userGroupRepository, ThreadPoolTaskScheduler threadPoolTaskScheduler) {
+    public EventService(EventRepository eventRepository, GroupRepository groupRepository, UserGroupRepository userGroupRepository, UserRepository userRepository, ThreadPoolTaskScheduler threadPoolTaskScheduler) {
         this.eventRepository = eventRepository;
         this.groupRepository = groupRepository;
         this.userGroupRepository = userGroupRepository;
+        this.userRepository = userRepository;
         this.threadPoolTaskScheduler = threadPoolTaskScheduler;
         formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     }
@@ -102,14 +105,16 @@ public class EventService {
         newEvent.getDatetime();
 
         Date notificationDate = addHoursToJavaUtilDate(newEvent.getDatetime(), -1);
-        Event savedEvent =  eventRepository.save(newEvent);
+        Event savedEvent = eventRepository.save(newEvent);
         Runnable task = () -> {
             System.out.println(LocalDateTime.now() + "- sent reminder about event with id " + savedEvent.getId() + " starting at " + savedEvent.getDatetime());
             String message = "O godzinie " + savedEvent.getDatetime().getHours() + ":" + savedEvent.getDatetime().getMinutes() +
                     " rozpocznie się wydarzenie " + savedEvent.getName() + " w grupie " + savedEvent.getGroup().getName();
-            List<String> userList = new ArrayList<>();
-            savedEvent.getGroup().getUsers().forEach( user -> userList.add(user.getUser().getOneSignalPlayerId()));
-            NotificationSender.sendMessageToUsers(message, userList, null);
+            List<AppUser> usersList = userRepository.findAllByGroupGUID(newEventDTO.getGuid());
+            List<String> usersOneSignalIds = new ArrayList<>();
+            usersList.forEach(user -> usersOneSignalIds.add(user.getOneSignalPlayerId()));
+
+            NotificationSender.sendMessageToUsers(message, usersOneSignalIds, null);
         };
         threadPoolTaskScheduler.schedule(task, notificationDate);
         return savedEvent;
