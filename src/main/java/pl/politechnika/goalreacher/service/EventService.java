@@ -112,7 +112,12 @@ public class EventService {
                     " rozpocznie się wydarzenie " + savedEvent.getName() + " w grupie " + savedEvent.getGroup().getName();
             List<AppUser> usersList = userRepository.findAllByGroupGUID(newEventDTO.getGuid());
             List<String> usersOneSignalIds = new ArrayList<>();
-            usersList.forEach(user -> usersOneSignalIds.add(user.getOneSignalPlayerId()));
+            usersList.forEach(user -> {
+                String oneSignalPlayerId = user.getOneSignalPlayerId();
+                if (oneSignalPlayerId != null) {
+                    usersOneSignalIds.add(oneSignalPlayerId);
+                }
+            });
 
             NotificationSender.sendMessageToUsers(message, usersOneSignalIds, null);
         };
