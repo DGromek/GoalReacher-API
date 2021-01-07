@@ -15,7 +15,9 @@ import pl.politechnika.goalreacher.repository.GroupRepository;
 import pl.politechnika.goalreacher.repository.InvitationRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
 import pl.politechnika.goalreacher.repository.UserRepository;
+import pl.politechnika.goalreacher.utils.NotificationSender;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -62,6 +64,11 @@ public class InvitationService
         invitation.setInvited(invited);
         invitation.setInviting(inviting);
 
+        String oneSignalPlayerId = invited.getOneSignalPlayerId();
+        if (oneSignalPlayerId != null) {
+            String message = "Otrzymałeś zaproszenie do grupy " + group.getName() + "!";
+            NotificationSender.sendMessageToUsers(message, Collections.singletonList(oneSignalPlayerId), null);
+        }
         return invitationRepository.save(invitation);
     }
 

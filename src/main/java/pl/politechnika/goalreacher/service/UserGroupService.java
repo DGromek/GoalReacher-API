@@ -18,6 +18,7 @@ import pl.politechnika.goalreacher.repository.UserRepository;
 import pl.politechnika.goalreacher.utils.NotificationSender;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -164,6 +165,12 @@ public class UserGroupService {
         newUserGroup.setGroup(group.get());
         newUserGroup.setGoogleCalendar(false);
         newUserGroup.setRole(Role.USER);
+
+        String oneSignalPlayerId = invited.get().getOneSignalPlayerId();
+        if (oneSignalPlayerId != null) {
+            String message = "Zostałeś przyjęty do grupy " + group.get().getName() + "!";
+            NotificationSender.sendMessageToUsers(message, Collections.singletonList(oneSignalPlayerId), null);
+        }
 
         invitationRepository.delete(invitation.get());
         return userGroupRepository.save(newUserGroup);
