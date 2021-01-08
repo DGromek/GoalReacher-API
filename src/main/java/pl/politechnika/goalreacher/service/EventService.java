@@ -108,11 +108,14 @@ public class EventService {
         Event savedEvent = eventRepository.save(newEvent);
         Runnable task = () -> {
             System.out.println(LocalDateTime.now() + "- sent reminder about event with id " + savedEvent.getId() + " starting at " + savedEvent.getDatetime());
-            String message = "O godzinie " + savedEvent.getDatetime().getHours() + ":" + savedEvent.getDatetime().getMinutes() +
-                    " rozpocznie się wydarzenie " + savedEvent.getName() + " w grupie " + savedEvent.getGroup().getName();
+            String message = "At " + savedEvent.getDatetime().getHours() + ":" + savedEvent.getDatetime().getMinutes() +
+                    " event " + savedEvent.getName() + " will start in group " + savedEvent.getGroup().getName();
             List<AppUser> usersList = userRepository.findAllByGroupGUID(newEventDTO.getGuid());
             List<String> usersOneSignalIds = new ArrayList<>();
-            usersList.forEach(user -> usersOneSignalIds.add(user.getOneSignalPlayerId()));
+            usersList.forEach(user -> {
+                if(user.getOneSignalPlayerId() != null && user.getOneSignalPlayerId() != "")
+                    usersOneSignalIds.add(user.getOneSignalPlayerId());
+            });
 
             NotificationSender.sendMessageToUsers(message, usersOneSignalIds, null);
         };
