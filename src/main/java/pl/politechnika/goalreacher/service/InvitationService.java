@@ -1,10 +1,9 @@
 package pl.politechnika.goalreacher.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import pl.politechnika.goalreacher.Exceptions.*;
+import pl.politechnika.goalreacher.Exceptions.NotAuthorizedException;
 import pl.politechnika.goalreacher.dto.InvitationDTO;
 import pl.politechnika.goalreacher.entity.AppGroup;
 import pl.politechnika.goalreacher.entity.AppUser;
@@ -15,7 +14,10 @@ import pl.politechnika.goalreacher.repository.GroupRepository;
 import pl.politechnika.goalreacher.repository.InvitationRepository;
 import pl.politechnika.goalreacher.repository.UserGroupRepository;
 import pl.politechnika.goalreacher.repository.UserRepository;
+import pl.politechnika.goalreacher.utils.NotificationSender;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,11 +51,13 @@ public class InvitationService
         UserGroup invitingGroup = userGroupRepository.findByUserAndGroup(inviting, group);
         UserGroup isAlreadyInGroup = userGroupRepository.findByUserAndGroup(invited, group);
 
-        if (inviting == null || invited == null || group == null || invitingGroup == null || isAlreadyInGroup != null) {
+        if (inviting == null || invited == null || group == null || invitingGroup == null || isAlreadyInGroup != null)
+        {
             return null;
         }
 
-        if(invitingGroup.getRole() == Role.PENDING || invitingGroup.getRole() == Role.USER) {
+        if (invitingGroup.getRole() == Role.PENDING || invitingGroup.getRole() == Role.USER)
+        {
             throw new NotAuthorizedException();
         }
 
@@ -61,6 +65,13 @@ public class InvitationService
         invitation.setGroup(group);
         invitation.setInvited(invited);
         invitation.setInviting(inviting);
+
+        List<String> recipient = new ArrayList<>();
+        recipient.add(invited.getOneSignalPlayerId());
+        String message = String.format("%s %s invited you to group %s", inviting.getFirstName(), inviting.getLastName(), group.getName());
+        String data = "{\"goto\": \"invitations\"}";
+
+        NotificationSender.sendMessageToUsers(message, recipient, data);
 
         return invitationRepository.save(invitation);
     }
